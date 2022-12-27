@@ -1,5 +1,5 @@
-// import { Document, Model, model, Schema } from 'mongoose'
-// // TODO: Use it as an example
+// import { Schema, model, Model, Document } from 'mongoose';
+
 // /**
 //  * Interface to model the User Schema for TypeScript.
 //  * @param email:string
