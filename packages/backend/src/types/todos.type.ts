@@ -1,5 +1,5 @@
 interface ITodo {
-  id: string;
+  id?: string;
   title: String;
   description: String;
   completed: Boolean;

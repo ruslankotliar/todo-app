@@ -4,15 +4,12 @@ import todoController from '../../controllers/todo.controller';
 import checkExists from '../../middlewares/validation/checkExists.middleware';
 import Todo from '../../models/Todo';
 import validateBody from '../../middlewares/validation/validateBody.middleware';
+import { ITodo } from '../../types/todos.type';
 
 const todosRouter: Router = Router();
 
 todosRouter.get('', sendResponse(todoController.getAllTodo.bind(todoController)));
-todosRouter.get(
-  '/get-todo/:id',
-  checkExists(Todo),
-  sendResponse(todoController.getOneTodo.bind(todoController))
-);
+todosRouter.get('/get-todo/:id', sendResponse(todoController.getOneTodo.bind(todoController)));
 todosRouter.post(
   '/create-todo',
   validateBody(),
@@ -20,13 +17,12 @@ todosRouter.post(
 );
 todosRouter.put(
   '/update-todo/:id',
-  checkExists(Todo),
+  checkExists<ITodo>(Todo),
   validateBody(),
   sendResponse(todoController.updateOneTodo.bind(todoController))
 );
 todosRouter.delete(
   '/delete-todo/:id',
-  checkExists(Todo),
   sendResponse(todoController.deleteOneTodo.bind(todoController))
 );
 
