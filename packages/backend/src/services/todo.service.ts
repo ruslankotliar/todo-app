@@ -1,5 +1,5 @@
 import Todo from '../models/Todo';
-import { ITodo } from '../types/todos.type';
+import { ITodo, UpdateTodoBody, CreateTodo } from '../types/todos.type';
 
 export default class TodoService {
   async findAll() {
@@ -7,18 +7,18 @@ export default class TodoService {
     return todos;
   }
 
-  async findOne(id: String) {
+  async findOne(id: string) {
     const todo: ITodo | null = await Todo.findOne({ _id: id });
     return todo;
   }
 
-  async createOne(body: ITodo) {
+  async createOne(body: CreateTodo) {
     const newTodo = new Todo(body);
     const todo = await newTodo.save();
     return todo;
   }
 
-  async updateOne(id: String, body: ITodo) {
+  async updateOne(id: string, body: UpdateTodoBody) {
     const todo: ITodo | null = await Todo.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true
@@ -26,7 +26,7 @@ export default class TodoService {
     return todo;
   }
 
-  async deleteOne(id: String) {
+  async deleteOne(id: string) {
     const todo: ITodo | null = await Todo.findByIdAndDelete(id);
     return todo;
   }
