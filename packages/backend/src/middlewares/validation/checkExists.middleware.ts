@@ -12,7 +12,7 @@ const checkExists =
       }
       const exists = await model.findById(id);
       if (!exists) {
-        throw new Error(`Todo with ${id} does not exist.`);
+        throw new Error(`${id} does not exist in DB.`);
       }
       next();
     } catch (error) {
