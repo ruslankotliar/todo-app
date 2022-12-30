@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Model, Types } from 'mongoose';
 
-const checkExists =
+export const checkExists =
   <T>(model: Model<T>) =>
   async (req: Request, _: Response, next: NextFunction) => {
     try {
@@ -19,5 +19,3 @@ const checkExists =
       next(error);
     }
   };
-
-export default checkExists;

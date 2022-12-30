@@ -3,7 +3,7 @@ import express from 'express';
 import 'dotenv/config';
 import AppRouter from './routes';
 import connectDB from './config/database';
-import errorHandler from './middlewares/handle-error/errorsHandler.middleware';
+import { errorHandler } from './middlewares/index';
 
 const app = express();
 const router = new AppRouter(app);
