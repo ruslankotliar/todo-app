@@ -4,7 +4,7 @@ import { ITodo } from '../types/todos.type';
 const todoSchema: Schema<ITodo> = new Schema({
   title: {
     type: String,
-    maxLength: 20,
+    maxLength: 50,
     required: true
   },
   description: {

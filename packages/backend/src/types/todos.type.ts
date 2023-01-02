@@ -14,7 +14,6 @@ type GetTodoById = {
 type CreateTodo = {
   title: String;
   description: String;
-  completed: Boolean;
   private: Boolean;
 };
 
