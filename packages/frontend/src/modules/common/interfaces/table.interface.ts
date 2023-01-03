@@ -1,5 +1,5 @@
 export interface Column {
-  id: 'title' | 'description' | 'completed' | '_id';
+  id: string;
   label: string;
   minWidth?: number;
   align?: 'center' | 'left';

@@ -15,11 +15,12 @@ import {
   CustomTypography,
   CustomTypographyBody
 } from './todo-single.styled';
+import { REACT_QUERY_KEYS } from '../../consts/app-keys.const';
 
 export const SingleTodoComponent = () => {
   const params: Params = useParams();
 
-  const { isLoading, isError, error, data } = useQuery<ITodo, Error>('todo', () =>
+  const { isLoading, isError, error, data } = useQuery<ITodo, Error>(REACT_QUERY_KEYS.todo, () =>
     getSingleTodo(params.id)
   );
   const { mutate: mutateUpdate } = useMutation<ITodo, Error, IUpdateTodoMutation>(updateTodo);

@@ -11,6 +11,7 @@ import { getAllTodos, removeTodo, updateTodo } from '../../api';
 import { TodosDesktopComponent } from './table-desktop';
 import { TodosTabletComponent } from './table-tablet';
 import { TodosMobileComponent } from './table-mobile';
+import { REACT_QUERY_KEYS } from '../../consts/app-keys.const';
 
 export const TodosTableComponent = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -18,7 +19,10 @@ export const TodosTableComponent = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [filterTodos, setFilterTodos] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const { isLoading, isError, error, data } = useQuery<ITodo[], Error>('todos', getAllTodos);
+  const { isLoading, isError, error, data } = useQuery<ITodo[], Error>(
+    REACT_QUERY_KEYS.todos,
+    getAllTodos
+  );
   const { mutate: mutateDelete } = useMutation<ITodo, Error, string>(removeTodo);
   const { mutate: mutateUpdate } = useMutation<ITodo, Error, IUpdateTodoMutation>(updateTodo);
 
@@ -68,9 +72,12 @@ export const TodosTableComponent = () => {
     setPage(0);
   };
 
+  // this is done to improve the efficiency of the application
+  // in 'data' all todos will be always saved
+  // if 'todos' all FILTERED or SEARCHED todos will be stored
+  // furthermore, when we delete a todo, new request is not send...
+  // ... todos are updating on front end in this case
   useEffect(() => {
-    // update todos after redirect
-    getAllTodos();
     if (!todos.length && data) setTodos(data);
   }, [data]);
 

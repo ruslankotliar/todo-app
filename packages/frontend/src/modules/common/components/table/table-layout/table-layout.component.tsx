@@ -4,9 +4,15 @@ import json2mq from 'json2mq';
 import { Box, IconButton, Tabs, TextField, useMediaQuery } from '@mui/material';
 import { Search } from '@material-ui/icons';
 
-import { PropsValue } from '../../../interfaces';
 import { a11yProps } from '../../../utils';
 import { CustomBoxHeader, CustomBoxLayout, CustomTab } from './table-layout.styled';
+
+interface PropsValue {
+  setSearchQuery: Function;
+  setFilterTodos: Function;
+  filterTodos: string;
+  children: any;
+}
 
 export const TodosTableLayout = ({
   children,

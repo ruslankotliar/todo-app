@@ -13,14 +13,14 @@ export const CustomMain = styled('main')((): any => ({
   minHeight: '100vh'
 }));
 
-export const CustomToolbar = styled(Toolbar)(({ theme }) => ({
+export const CustomToolbar = styled(Toolbar)(({ theme }): any => ({
   display: 'flex',
   justifyContent: 'space-between'
 }));
 
 export const CustomButton = styled(Button)(({ theme }) => ({
-  width: '7rem',
+  width: theme.spaces.l7,
   [theme.breakpoints.down('sm')]: {
-    padding: '0.5rem 0.2rem'
+    padding: `${theme.spaces.s} ${theme.spaces.xs}`
   }
 }));

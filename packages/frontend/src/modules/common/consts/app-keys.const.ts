@@ -47,3 +47,8 @@ export const columns: Column[] = [
     align: 'center'
   }
 ];
+
+export const REACT_QUERY_KEYS: { todo: string; todos: string } = {
+  todo: 'todo',
+  todos: 'todos'
+};

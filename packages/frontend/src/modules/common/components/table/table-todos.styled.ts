@@ -3,18 +3,17 @@ import styled from 'styled-components';
 import { Box, Button, Paper, TableCell, Typography } from '@mui/material';
 
 export const CustomPaper = styled(Paper)(({ theme }) => ({
-  margin: 'auto',
-  width: '90vw'
+  margin: `0 ${theme.spaces.l4}`
 }));
 
 export const CustomTableCell = styled(TableCell)(({ theme }) => ({
   wordBreak: 'break-all',
-  maxWidth: '40rem'
+  maxWidth: theme.spaces.l40
 }));
 
 export const CustomDeleteButton = styled(Button)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
-    color: 'red'
+    color: theme.colors.red
   }
 }));
 
@@ -38,19 +37,18 @@ export const CustomTableHeaderCell = styled(TableCell)(({ theme }) => ({
 
 export const CustomTypography = styled(Typography)(({ theme }) => ({
   wordBreak: 'break-all',
-  minHeight: '15rem',
+  minHeight: theme.spaces.l15,
   [theme.breakpoints.down('md')]: {
-    minHeight: '1rem'
+    minHeight: theme.spaces.l
   }
 }));
 
 export const CustomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  marginTop: '1rem',
-  width: '60%',
+  marginTop: theme.spaces.l,
   justifyContent: 'space-between'
 }));
 
 export const CustomBoxMobile = styled(Box)(({ theme }) => ({
-  marginTop: '1rem'
+  marginTop: theme.spaces.l
 }));

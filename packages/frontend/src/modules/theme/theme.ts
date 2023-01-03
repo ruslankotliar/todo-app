@@ -12,10 +12,10 @@ export const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#3F8AE0'
+      main: COLORS.primary
     },
     secondary: {
-      main: '#326eb3'
+      main: COLORS.secondary
     }
   },
   colors: COLORS,

@@ -19,11 +19,7 @@ export const UpdateTodoComponent = () => {
     mutate,
     status: mutateStatus,
     error: mutateError
-  } = useMutation<
-    ITodo, // return type
-    Error,
-    IUpdateTodoMutation // params type
-  >(updateTodo);
+  } = useMutation<ITodo, Error, IUpdateTodoMutation>(updateTodo);
 
   const handleSubmit = (todo: IUpdateTodo) => {
     mutate({ todo, id: params.id });
@@ -31,7 +27,6 @@ export const UpdateTodoComponent = () => {
 
   useEffect(() => {
     if (mutateStatus === 'success') history.push('/');
-    if (mutateError) console.error(mutateError);
   }, [mutateStatus, mutateError]);
 
   if (isLoading) return <h1>Loading...</h1>;
