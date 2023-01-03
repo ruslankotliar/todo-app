@@ -1,5 +1,6 @@
 import React from 'react';
+import { TodosTableComponent } from '../common/components/table';
 
-const HomePageContainer = () => <div>React is ready HOME</div>;
+const HomePageContainer = () => <TodosTableComponent />;
 
 export default HomePageContainer;
