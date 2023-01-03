@@ -3,10 +3,13 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { ThemeProvider } from 'styled-components';
 import { MainRouter } from '../navigation';
+import { LayoutComponent } from '../common/components/layout';
 
-import * as theme from '../theme';
+import { theme } from '../theme';
 import * as Styled from './app.styled';
 import '../../style.css';
+
+import 'swiper/css/bundle';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +27,9 @@ const AppContainer = () => (
   <ThemeProvider theme={theme}>
     <Styled.GlobalStyles />
     <QueryClientProvider client={queryClient}>
-      <MainRouter />
+      <LayoutComponent>
+        <MainRouter />
+      </LayoutComponent>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </ThemeProvider>
