@@ -17,14 +17,14 @@ todosRouter.get('/get-todo/:id', sendResponse(todoController.getOneTodo.bind(tod
 todosRouter.post(
   '/create-todo',
   verifyToken,
-  validateBody(taskSchema),
+  validateBody<ITodo>(taskSchema),
   sendResponse(todoController.createOneTodo.bind(todoController))
 );
 todosRouter.put(
   '/update-todo/:id',
   verifyToken,
   checkExists<ITodo>(Todo),
-  validateBody(taskSchema),
+  validateBody<ITodo>(taskSchema),
   sendResponse(todoController.updateOneTodo.bind(todoController))
 );
 todosRouter.delete(

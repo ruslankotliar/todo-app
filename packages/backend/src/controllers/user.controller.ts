@@ -18,6 +18,8 @@ export class UserController {
 
   async registerUser(req: TypedRequestBody<ICreateUser>) {
     const { email, password, avatar } = req.body;
+    const user = await this.userService.findUser(email);
+    if (user) throw new Error('User already exists');
     const hashedPassword = await hashPassword(password);
     const newUser = await this.userService.registerUser({
       email,

@@ -6,8 +6,7 @@ export const sendResponse =
     try {
       const data = await controller(req);
       const token = await signJwt(data._id, data.email);
-      data.token = token;
-      res.status(200).json(data);
+      res.status(200).json({ data, token });
     } catch (error) {
       next(error);
     }
