@@ -16,6 +16,12 @@ export class TodoController {
     return todos;
   }
 
+  async getAllPrivateTodo(req: TypedRequestParams<GetTodoById>) {
+    const { id } = req.params;
+    const todos = await this.todoService.findAllPrivate(id);
+    return todos;
+  }
+
   async getOneTodo(req: TypedRequestParams<GetTodoById>) {
     const { id } = req.params;
     const todo = await this.todoService.findOne(id);

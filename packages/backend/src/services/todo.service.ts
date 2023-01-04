@@ -3,7 +3,14 @@ import { ITodo, UpdateTodoBody, CreateTodo } from '../types/todos.type';
 
 export default class TodoService {
   async findAll() {
-    const todos: Array<ITodo> | null = await Todo.find({}).sort({ createdAt: -1 });
+    const todos: Array<ITodo> | null = await Todo.find({ private: false }).sort({ createdAt: -1 });
+    return todos;
+  }
+
+  async findAllPrivate(id: string) {
+    const todos: Array<ITodo> | null = await Todo.find({ private: true, userId: id }).sort({
+      createdAt: -1
+    });
     return todos;
   }
 

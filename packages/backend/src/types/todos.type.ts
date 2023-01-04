@@ -5,6 +5,7 @@ interface ITodo {
   completed: Boolean;
   private: Boolean;
   createdAt: Date;
+  userId: string;
 }
 
 type GetTodoById = {
