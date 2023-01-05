@@ -47,34 +47,37 @@ export const TodosDesktopComponent = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => {
-            const { title, description, completed, private: privateStatus, _id: id } = row;
-            return (
-              <TableRow hover role="checkbox" tabIndex={-1} key={id}>
-                <CustomTableCell align="left">{title}</CustomTableCell>
-                <CustomTableCell align="left">{description}</CustomTableCell>
-                <CustomViewButton variant="contained" href={`/todo/${id}`}>
-                  View
-                </CustomViewButton>
-                <CustomEditButton href={`/todo/update-todo/${id}`}>Edit</CustomEditButton>
-                <CustomDeleteButton onClick={() => removeTodoFromDB(id)}>Delete</CustomDeleteButton>
-                <Switch
-                  onChange={(e) => {
-                    updateTodoCompleteStatus(
-                      {
-                        title,
-                        description,
-                        privateStatus,
-                        completed: e.target.checked
-                      },
-                      id
-                    );
-                  }}
-                  defaultChecked={completed}
-                />
-              </TableRow>
-            );
-          })}
+          {todos.length &&
+            todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => {
+              const { title, description, completed, private: privateStatus, _id: id } = row;
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={id}>
+                  <CustomTableCell align="left">{title}</CustomTableCell>
+                  <CustomTableCell align="left">{description}</CustomTableCell>
+                  <CustomViewButton variant="contained" href={`/todo/${id}`}>
+                    View
+                  </CustomViewButton>
+                  <CustomEditButton href={`/todo/update-todo/${id}`}>Edit</CustomEditButton>
+                  <CustomDeleteButton onClick={() => removeTodoFromDB(id)}>
+                    Delete
+                  </CustomDeleteButton>
+                  <Switch
+                    onChange={(e) => {
+                      updateTodoCompleteStatus(
+                        {
+                          title,
+                          description,
+                          privateStatus,
+                          completed: e.target.checked
+                        },
+                        id
+                      );
+                    }}
+                    defaultChecked={completed}
+                  />
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
     </TableContainer>

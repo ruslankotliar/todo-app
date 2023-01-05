@@ -36,17 +36,3 @@ export const REACT_QUERY_KEYS: { todo: string; todos: string } = {
   todo: 'todo',
   todos: 'todos'
 };
-
-export const columns: Column[] = [
-  { id: 'title', label: 'Title', minWidth: 100, align: 'left' },
-  { id: 'description', label: 'Description', minWidth: 100, align: 'left' },
-  { id: '_id', label: 'View', align: 'center' },
-  { id: '_id', label: 'Edit', align: 'center' },
-  { id: '_id', label: 'Delete', align: 'center' },
-  {
-    id: 'completed',
-    label: 'Completed',
-    minWidth: 170,
-    align: 'center'
-  }
-];

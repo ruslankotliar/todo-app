@@ -23,11 +23,12 @@ import { REACT_QUERY_KEYS } from '../../consts/app-keys.const';
 export const SingleTodoComponent = () => {
   const params: Params = useParams();
 
-  const { isLoading, isError, error, data } = useQuery<ITodo, Error>(REACT_QUERY_KEYS.todo, () =>
-    todoService.getSingleTodo(params.id)
+  const { isLoading, isError, error, data } = useQuery<ITodo, Error>(
+    REACT_QUERY_KEYS.todo,
+    async () => (await todoService.getSingleTodo(params.id)).data
   );
   const { mutate: mutateUpdate } = useMutation<ITodo, Error, IUpdateTodoMutation>(
-    todoService.updateTodo
+    async (body: IUpdateTodoMutation) => todoService.updateTodo(body)
   );
 
   // UPDATE TODO

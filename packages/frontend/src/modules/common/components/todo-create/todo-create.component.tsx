@@ -15,7 +15,9 @@ export const CreateTodoComponent = () => {
     mutate,
     status: mutateStatus,
     error: mutateError
-  } = useMutation<ITodo, Error, ICreateTodo>(todoService.createTodo);
+  } = useMutation<ITodo, Error, ICreateTodo>(async (body: ICreateTodo) =>
+    todoService.createTodo(body)
+  );
 
   const handleSubmit = (todo: ICreateTodo) => {
     mutate(todo);

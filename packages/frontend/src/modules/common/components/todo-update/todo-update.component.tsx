@@ -6,6 +6,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Params } from '../../types';
 
 import { todoService } from '../../api/services';
+import { REACT_QUERY_KEYS } from '../../consts/app-keys.const';
 
 import { TodoFormComponent } from '../todo-form';
 import { ITodo, IUpdateTodo, IUpdateTodoMutation } from '../../interfaces';
@@ -13,14 +14,17 @@ import { ITodo, IUpdateTodo, IUpdateTodoMutation } from '../../interfaces';
 export const UpdateTodoComponent = () => {
   const history = useHistory();
   const params: Params = useParams();
-  const { isLoading, isError, error, data } = useQuery<ITodo, Error>('todo', () =>
-    todoService.getSingleTodo(params.id)
+  const { isLoading, isError, error, data } = useQuery<ITodo, Error>(
+    REACT_QUERY_KEYS.todo,
+    async () => (await todoService.getSingleTodo(params.id)).data
   );
   const {
     mutate,
     status: mutateStatus,
     error: mutateError
-  } = useMutation<ITodo, Error, IUpdateTodoMutation>(todoService.updateTodo);
+  } = useMutation<ITodo, Error, IUpdateTodoMutation>(async (body: IUpdateTodoMutation) =>
+    todoService.updateTodo(body)
+  );
 
   const handleSubmit = (todo: IUpdateTodo) => {
     mutate({ todo, id: params.id });

@@ -23,11 +23,13 @@ export const TodosTableComponent = () => {
 
   const { isLoading, isError, error, data } = useQuery<ITodo[], Error>(
     REACT_QUERY_KEYS.todos,
-    todoService.getAllTodos
+    async () => (await todoService.getAllTodos()).data
   );
-  const { mutate: mutateDelete } = useMutation<ITodo, Error, string>(todoService.removeTodo);
+  const { mutate: mutateDelete } = useMutation<ITodo, Error, string>(async (body: string) =>
+    todoService.removeTodo(body)
+  );
   const { mutate: mutateUpdate } = useMutation<ITodo, Error, IUpdateTodoMutation>(
-    todoService.updateTodo
+    async (body: IUpdateTodoMutation) => todoService.updateTodo(body)
   );
 
   // MEDIA QUERIES

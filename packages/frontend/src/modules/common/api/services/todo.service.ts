@@ -2,29 +2,24 @@ import { ICreateTodo, IUpdateTodoMutation } from '../../interfaces';
 import HttpService from './http.service';
 
 class TodoService extends HttpService {
-  async getAllTodos() {
-    const { data } = await this.get({ url: 'todos' }, false);
-    return data;
+  getAllTodos() {
+    return this.get({ url: 'todos' }, false);
   }
 
-  async getSingleTodo(id: string) {
-    const { data } = await this.get({ url: `todos/get-todo/${id}` }, false);
-    return data;
+  getSingleTodo(id: string) {
+    return this.get({ url: `todos/get-todo/${id}` }, false);
   }
 
-  async updateTodo({ todo, id }: IUpdateTodoMutation) {
-    const { data } = await this.put({ url: `todos/update-todo/${id}`, data: todo }, false);
-    return data;
+  updateTodo({ todo, id }: IUpdateTodoMutation) {
+    return this.put({ url: `todos/update-todo/${id}`, data: todo }, false);
   }
 
-  async createTodo(todo: ICreateTodo) {
-    const { data } = await this.post({ url: 'todos/create-todo', data: todo }, false);
-    return data;
+  createTodo(todo: ICreateTodo) {
+    return this.post({ url: 'todos/create-todo', data: todo }, false);
   }
 
-  async removeTodo(id: string) {
-    const { data } = await this.delete({ url: `todos/delete-todo/${id}` }, false);
-    return data;
+  removeTodo(id: string) {
+    return this.delete({ url: `todos/delete-todo/${id}` }, false);
   }
 }
 
