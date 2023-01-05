@@ -7,6 +7,7 @@ import { useMediaQuery } from '@mui/material';
 
 import { TodosTableLayout } from './table-layout';
 import { ITodo, IUpdateTodo, IUpdateTodoMutation } from '../../interfaces';
+
 import { todoService } from '../../api/services';
 import { TodosDesktopComponent } from './table-desktop';
 import { TodosTabletComponent } from './table-tablet';
@@ -19,6 +20,7 @@ export const TodosTableComponent = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [filterTodos, setFilterTodos] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+
   const { isLoading, isError, error, data } = useQuery<ITodo[], Error>(
     REACT_QUERY_KEYS.todos,
     todoService.getAllTodos

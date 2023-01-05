@@ -7,7 +7,9 @@ import { Button, Grid, Switch, Typography } from '@mui/material';
 import { ITodo, IUpdateTodo, IUpdateTodoMutation } from '../../interfaces';
 
 import { Params } from '../../types';
+
 import { todoService } from '../../api/services';
+
 import {
   CustomBox,
   CustomGrid,
@@ -15,6 +17,7 @@ import {
   CustomTypography,
   CustomTypographyBody
 } from './todo-single.styled';
+
 import { REACT_QUERY_KEYS } from '../../consts/app-keys.const';
 
 export const SingleTodoComponent = () => {

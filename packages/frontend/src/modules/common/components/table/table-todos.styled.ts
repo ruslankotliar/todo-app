@@ -8,6 +8,7 @@ export const CustomPaper = styled(Paper)(({ theme }) => ({
 
 export const CustomTableCell = styled(TableCell)(({ theme }) => ({
   wordBreak: 'break-all',
+
   maxWidth: theme.spaces.l40
 }));
 
@@ -37,6 +38,7 @@ export const CustomTableHeaderCell = styled(TableCell)(({ theme }) => ({
 
 export const CustomTypography = styled(Typography)(({ theme }) => ({
   wordBreak: 'break-all',
+
   minHeight: theme.spaces.l15,
   [theme.breakpoints.down('md')]: {
     minHeight: theme.spaces.l
@@ -45,7 +47,9 @@ export const CustomTypography = styled(Typography)(({ theme }) => ({
 
 export const CustomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
+
   marginTop: theme.spaces.l,
+
   justifyContent: 'space-between'
 }));
 

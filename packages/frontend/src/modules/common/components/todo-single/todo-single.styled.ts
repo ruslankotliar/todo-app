@@ -11,11 +11,14 @@ export const CustomPaper = styled(Paper)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     margin: theme.spaces.l2,
     padding: `${theme.spaces.l} ${theme.spaces.l3}`,
+
     width: '90vw'
   },
   [theme.breakpoints.down('sm')]: {
     margin: 0,
+
     padding: `${theme.spaces.s} ${theme.spaces.l}`,
+
     width: '90vw'
   }
 }));

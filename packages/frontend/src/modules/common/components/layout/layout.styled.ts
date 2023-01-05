@@ -18,7 +18,7 @@ export const CustomToolbar = styled(Toolbar)(({ theme }): any => ({
   justifyContent: 'space-between'
 }));
 
-export const CustomButton = styled(Button)(({ theme }) => ({
+export const CustomButton = styled(Button)(({ theme }): any => ({
   width: theme.spaces.l7,
   [theme.breakpoints.down('sm')]: {
     padding: `${theme.spaces.s} ${theme.spaces.xs}`

@@ -5,6 +5,7 @@ import { Box, Tab } from '@mui/material';
 export const CustomBoxLayout = styled(Box)(({ theme }) => ({
   width: '100%',
   alignSelf: 'flex-start',
+
   margin: `${theme.spaces.l7} 0`,
   [theme.breakpoints.down('sm')]: {
     margin: `${theme.spaces.l5} 0`,
@@ -27,6 +28,7 @@ export const CustomBoxHeader = styled(Box)(({ theme }) => ({
 export const CustomTab = styled(Tab)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
+
   minWidth: theme.spaces.l4,
   margin: 'auto',
   [theme.breakpoints.down('sm')]: {
