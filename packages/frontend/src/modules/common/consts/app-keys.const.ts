@@ -1,5 +1,3 @@
-import { Column } from '../interfaces';
-
 // Local storage keys
 export const STORAGE_KEYS = {
   JWT_TOKEN_STUDENT: 'JWT_TOKEN_STUDENT',
@@ -33,20 +31,6 @@ export const ROUTER_KEYS = {
   NOT_FOUND: '*',
   PROFILE: '/profile/:id'
 };
-
-export const columns: Column[] = [
-  { id: 'title', label: 'Title', minWidth: 100, align: 'left' },
-  { id: 'description', label: 'Description', minWidth: 100, align: 'left' },
-  { id: '_id', label: 'View', align: 'center' },
-  { id: '_id', label: 'Edit', align: 'center' },
-  { id: '_id', label: 'Delete', align: 'center' },
-  {
-    id: 'completed',
-    label: 'Completed',
-    minWidth: 170,
-    align: 'center'
-  }
-];
 
 export const REACT_QUERY_KEYS: { todo: string; todos: string } = {
   todo: 'todo',
