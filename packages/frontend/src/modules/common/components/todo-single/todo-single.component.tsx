@@ -7,7 +7,7 @@ import { Button, Grid, Switch, Typography } from '@mui/material';
 import { ITodo, IUpdateTodo, IUpdateTodoMutation } from '../../interfaces';
 
 import { Params } from '../../types';
-import { getSingleTodo, updateTodo } from '../../api';
+import { todoService } from '../../api/services';
 import {
   CustomBox,
   CustomGrid,
@@ -21,9 +21,11 @@ export const SingleTodoComponent = () => {
   const params: Params = useParams();
 
   const { isLoading, isError, error, data } = useQuery<ITodo, Error>(REACT_QUERY_KEYS.todo, () =>
-    getSingleTodo(params.id)
+    todoService.getSingleTodo(params.id)
   );
-  const { mutate: mutateUpdate } = useMutation<ITodo, Error, IUpdateTodoMutation>(updateTodo);
+  const { mutate: mutateUpdate } = useMutation<ITodo, Error, IUpdateTodoMutation>(
+    todoService.updateTodo
+  );
 
   // UPDATE TODO
   const updateTodoCompleteStatus = (todo: IUpdateTodo, id: string): void => {

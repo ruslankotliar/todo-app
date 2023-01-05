@@ -7,7 +7,7 @@ import { ICreateTodo, ITodo } from '../../interfaces';
 
 import { TodoFormComponent } from '../todo-form';
 
-import { createTodo } from '../../api';
+import { todoService } from '../../api/services';
 
 export const CreateTodoComponent = () => {
   const history = useHistory();
@@ -15,7 +15,7 @@ export const CreateTodoComponent = () => {
     mutate,
     status: mutateStatus,
     error: mutateError
-  } = useMutation<ITodo, Error, ICreateTodo>(createTodo);
+  } = useMutation<ITodo, Error, ICreateTodo>(todoService.createTodo);
 
   const handleSubmit = (todo: ICreateTodo) => {
     mutate(todo);

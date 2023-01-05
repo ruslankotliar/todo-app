@@ -7,7 +7,7 @@ import { useMediaQuery } from '@mui/material';
 
 import { TodosTableLayout } from './table-layout';
 import { ITodo, IUpdateTodo, IUpdateTodoMutation } from '../../interfaces';
-import { getAllTodos, removeTodo, updateTodo } from '../../api';
+import { todoService } from '../../api/services';
 import { TodosDesktopComponent } from './table-desktop';
 import { TodosTabletComponent } from './table-tablet';
 import { TodosMobileComponent } from './table-mobile';
@@ -21,10 +21,12 @@ export const TodosTableComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { isLoading, isError, error, data } = useQuery<ITodo[], Error>(
     REACT_QUERY_KEYS.todos,
-    getAllTodos
+    todoService.getAllTodos
   );
-  const { mutate: mutateDelete } = useMutation<ITodo, Error, string>(removeTodo);
-  const { mutate: mutateUpdate } = useMutation<ITodo, Error, IUpdateTodoMutation>(updateTodo);
+  const { mutate: mutateDelete } = useMutation<ITodo, Error, string>(todoService.removeTodo);
+  const { mutate: mutateUpdate } = useMutation<ITodo, Error, IUpdateTodoMutation>(
+    todoService.updateTodo
+  );
 
   // MEDIA QUERIES
   const mobile = useMediaQuery(

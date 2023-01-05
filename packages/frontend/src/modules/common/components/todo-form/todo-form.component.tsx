@@ -21,7 +21,6 @@ export const TodoFormComponent = ({ initialValues, handleSubmit }: any) => (
     }}
     onSubmit={(values, { setSubmitting, resetForm }) => {
       handleSubmit(values);
-      console.log(JSON.stringify(values, null, 2));
       setSubmitting(false);
       resetForm();
     }}

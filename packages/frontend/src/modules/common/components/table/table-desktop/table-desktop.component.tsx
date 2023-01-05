@@ -18,8 +18,6 @@ import {
   CustomViewButton
 } from '../table-todos.styled';
 
-import { columns } from '../../../consts/app-keys.const';
-
 export const TodosDesktopComponent = ({
   todos,
   page,
@@ -49,86 +47,34 @@ export const TodosDesktopComponent = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {todos.length &&
-            todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
-                {columns.map((column) => {
-                  const value = row[column.id];
-                  const cell: any =
-                    column.label === 'View' ? (
-                      <CustomViewButton variant="contained" href={`/todo/${value}`}>
-                        {column.label}
-                      </CustomViewButton>
-                    ) : column.label === 'Delete' ? (
-                      <CustomDeleteButton onClick={() => removeTodoFromDB(value)}>
-                        {column.label}
-                      </CustomDeleteButton>
-                    ) : column.label === 'Edit' ? (
-                      <CustomEditButton href={`/todo/update-todo/${value}`}>
-                        {column.label}
-                      </CustomEditButton>
-                    ) : column.label === 'Completed' ? (
-                      <Switch
-                        onChange={(e) => {
-                          updateTodoCompleteStatus(
-                            {
-                              title: row.title,
-                              description: row.description,
-                              private: row.private,
-                              completed: e.target.checked
-                            },
-                            row._id
-                          );
-                        }}
-                        defaultChecked={value}
-                      />
-                    ) : (
-                      value
+          {todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => {
+            const { title, description, completed, private: privateStatus, _id: id } = row;
+            return (
+              <TableRow hover role="checkbox" tabIndex={-1} key={id}>
+                <CustomTableCell align="left">{title}</CustomTableCell>
+                <CustomTableCell align="left">{description}</CustomTableCell>
+                <CustomViewButton variant="contained" href={`/todo/${id}`}>
+                  View
+                </CustomViewButton>
+                <CustomEditButton href={`/todo/update-todo/${id}`}>Edit</CustomEditButton>
+                <CustomDeleteButton onClick={() => removeTodoFromDB(id)}>Delete</CustomDeleteButton>
+                <Switch
+                  onChange={(e) => {
+                    updateTodoCompleteStatus(
+                      {
+                        title,
+                        description,
+                        privateStatus,
+                        completed: e.target.checked
+                      },
+                      id
                     );
-                  // if (column.label === 'View') {
-                  //   cell = (
-                  //     <CustomViewButton variant="contained" href={`/todo/${value}`}>
-                  //       {column.label}
-                  //     </CustomViewButton>
-                  //   );
-                  // } else if (column.label === 'Delete') {
-                  //   cell = (
-                  //     <CustomDeleteButton onClick={() => removeTodoFromDB(value)}>
-                  //       {column.label}
-                  //     </CustomDeleteButton>
-                  //   );
-                  // } else if (column.label === 'Edit') {
-                  //   cell = (
-                  //     <CustomEditButton href={`/todo/update-todo/${value}`}>
-                  //       {column.label}
-                  //     </CustomEditButton>
-                  //   );
-                  // } else if (column.label === 'Completed') {
-                  //   cell = (
-                  //     <Switch
-                  //       onChange={(e) => {
-                  //         updateTodoCompleteStatus(
-                  //           {
-                  //             title: row.title,
-                  //             description: row.description,
-                  //             private: row.private,
-                  //             completed: e.target.checked
-                  //           },
-                  //           row._id
-                  //         );
-                  //       }}
-                  //       defaultChecked={value}
-                  //     />
-                  //   );
-                  // }
-                  return (
-                    <CustomTableCell key={`${column.id}-${column.label}`} align={column.align}>
-                      {cell}
-                    </CustomTableCell>
-                  );
-                })}
+                  }}
+                  defaultChecked={completed}
+                />
               </TableRow>
-            ))}
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
