@@ -15,7 +15,6 @@ export default class TodoService {
     ]).sort({
       createdAt: -1
     });
-    console.log(todos);
     return todos;
   }
 

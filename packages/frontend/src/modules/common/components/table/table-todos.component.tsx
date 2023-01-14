@@ -27,7 +27,7 @@ export const TodosTableComponent = () => {
   if (isLoading) return <SpinnerComponent />;
   if (isError || isErrorMutate) return <ErrorComponent error={error || errorMutate} />;
   return (
-    <TodosTableLayout setTrigger={setTrigger} count={todos[0].totalCount}>
+    <TodosTableLayout setTrigger={setTrigger} count={todos[0]?.totalCount || 0}>
       {desktop && (
         <TodosDesktopComponent
           todos={todos}
