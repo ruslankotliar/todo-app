@@ -1,7 +1,8 @@
+import { queryHelper } from '../helpers/query.helper';
 import TodoService from '../services/todo.service';
 import { TypedRequestBody, TypedRequestParams } from '../types/controllers.type';
 import {
-  GetTodoById,
+  GetById,
   CreateTodo,
   UpdateTodoBody,
   DeleteTodoById,
@@ -11,18 +12,14 @@ import {
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  async getAllTodo() {
-    const todos = await this.todoService.findAll();
-    return todos;
-  }
-
-  async getAllPrivateTodo(req: TypedRequestParams<GetTodoById>) {
+  async getAllTodo(req: TypedRequestParams<GetById>) {
     const { id } = req.params;
-    const todos = await this.todoService.findAllPrivate(id);
+    const { filters, pagination } = queryHelper(req.query);
+    const todos = await this.todoService.findAll(id, filters, pagination);
     return todos;
   }
 
-  async getOneTodo(req: TypedRequestParams<GetTodoById>) {
+  async getOneTodo(req: TypedRequestParams<GetById>) {
     const { id } = req.params;
     const todo = await this.todoService.findOne(id);
     return todo;

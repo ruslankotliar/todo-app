@@ -1,3 +1,4 @@
 export type Params = {
-  id: string;
+  todoID: string;
+  userID: string;
 };

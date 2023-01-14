@@ -1,5 +1,5 @@
 import React from 'react';
-import { NotFoundComponent } from '../common/components/error404';
+import { NotFoundComponent } from '../common/components/error';
 
 const NotFoundPageComponent = () => <NotFoundComponent />;
 

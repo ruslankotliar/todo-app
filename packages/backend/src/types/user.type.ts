@@ -1,6 +1,5 @@
 interface IUser {
   _id: string;
-  token?: string;
   email: string;
   password: string;
   avatar: string;
@@ -12,8 +11,8 @@ interface ICreateUser {
   avatar: string;
 }
 
-type SignInUser = {
-  email: string;
+type LogInUserReqBody = {
+  user: IUser;
 };
 
-export type { IUser, ICreateUser, SignInUser };
+export type { IUser, ICreateUser, LogInUserReqBody };

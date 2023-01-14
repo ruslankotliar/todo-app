@@ -4,7 +4,7 @@
 
 ## Project commands
 
-`yarn start` - to launch your project  
+`yarn start` - to launch your project
 
 ## Pre requirements
 
@@ -56,9 +56,9 @@ Time-frames of the test task is highly important! You have only 2 weeks for the 
 - _For data fetching you can use [React Query](https://react-query.tanstack.com/), it also help you to globally store your data_
 - _Todo list page should have different behaviors on different devices. Desktop - should be displayed as a table, Tablet - should be as slider, Mobile - list._
 - _Your font sizes, colors, margins, paddings should be in THEME const_
-- _Create QUERY_KEYS and ROUTER_KEYS const for routing_ 
+- _Create QUERY_KEYS and ROUTER_KEYS const for routing_
 - _Use styled components_
-- _Design should be tablet and mobile adaptive_ 
+- _Design should be tablet and mobile adaptive_
 
 3. **Authorization (login/signup) backend;**
 
@@ -78,6 +78,7 @@ Time-frames of the test task is highly important! You have only 2 weeks for the 
 
 - _You should pass filter params through `req.params`(`localhost:3000/todo?search=test&status=completed`)_
 - _Connect backend filtration with UI components_
+
 6. **Button pagination;**
 
 - _All pagination should be handled by backend_
@@ -109,7 +110,7 @@ Design: [drive.google](https://drive.google.com/file/d/1ZYq8mnXYxRJR-acpW3PqKSiz
 [Typescript](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)  
 [Passport](http://www.passportjs.org/)  
 [React Query](https://react-query.tanstack.com/)  
-[Styled component](https://styled-components.com/)  
+[Styled component](https://styled-components.com/)
 
 ```
 

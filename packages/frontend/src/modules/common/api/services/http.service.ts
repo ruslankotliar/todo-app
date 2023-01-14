@@ -32,8 +32,10 @@ export default class HttpService {
   }
 
   private populateTokenToHeaderConfig() {
+    const token = localStorage.getItem('todo-app-token');
+    if (!token) return;
     return {
-      Authorization: localStorage.getItem('token')
+      Authorization: JSON.parse(token)
     };
   }
 

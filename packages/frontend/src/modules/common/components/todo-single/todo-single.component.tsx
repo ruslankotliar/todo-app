@@ -1,14 +1,6 @@
 import React from 'react';
-import { useMutation, useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
 
 import { Button, Grid, Switch, Typography } from '@mui/material';
-
-import { ITodo, IUpdateTodo, IUpdateTodoMutation } from '../../interfaces';
-
-import { Params } from '../../types';
-
-import { todoService } from '../../api/services';
 
 import {
   CustomBox,
@@ -18,45 +10,36 @@ import {
   CustomTypographyBody
 } from './todo-single.styled';
 
-import { REACT_QUERY_KEYS } from '../../consts/app-keys.const';
+import { useTodos } from '../../hooks';
+import { SpinnerComponent } from '../spinner';
+import { ErrorComponent } from '../error';
 
 export const SingleTodoComponent = () => {
-  const params: Params = useParams();
+  const { isError: isErrorMutate, error: errorMutate, singleTodo, updateTodoMutation } = useTodos();
 
-  const { isLoading, isError, error, data } = useQuery<ITodo, Error>(
-    REACT_QUERY_KEYS.todo,
-    async () => (await todoService.getSingleTodo(params.id)).data
-  );
-  const { mutate: mutateUpdate } = useMutation<ITodo, Error, IUpdateTodoMutation>(
-    async (body: IUpdateTodoMutation) => todoService.updateTodo(body)
-  );
-
-  // UPDATE TODO
-  const updateTodoCompleteStatus = (todo: IUpdateTodo, id: string): void => {
-    mutateUpdate({ todo, id });
-  };
+  const { isLoading, isError, error, data: todo } = singleTodo;
 
   const handleChange = (value: string, newValue: Boolean) => {
-    if (!data) return;
-    if (value === 'completed' || value === 'private') data[value] = newValue;
-    updateTodoCompleteStatus(
+    if (!todo) return;
+    if (value === 'completed' || value === 'private') todo[value] = newValue;
+    updateTodoMutation(
       {
-        title: String(data?.title),
-        description: String(data?.description),
-        completed: Boolean(data?.completed),
-        private: Boolean(data?.private)
+        title: String(todo?.title),
+        description: String(todo?.description),
+        completed: Boolean(todo?.completed),
+        private: Boolean(todo?.private)
       },
-      data?._id
+      todo?._id
     );
   };
 
-  if (isLoading) return <h1>Loading...</h1>;
-  if (isError) return <div>Error! {error?.message}</div>;
+  if (isLoading) return <SpinnerComponent />;
+  if (isError || isErrorMutate) return <ErrorComponent error={error || errorMutate} />;
   return (
     <CustomPaper>
-      <CustomTypography>{data?.title}</CustomTypography>
+      <CustomTypography>{todo?.title}</CustomTypography>
       <Typography variant="h6">Description</Typography>
-      <CustomTypographyBody variant="body1">{data?.description}</CustomTypographyBody>
+      <CustomTypographyBody variant="body1">{todo?.description}</CustomTypographyBody>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={6}>
           <Typography>Completed</Typography>
@@ -64,7 +47,7 @@ export const SingleTodoComponent = () => {
         <CustomGrid item xs={6}>
           <Switch
             onChange={(e) => handleChange('completed', e.target.checked)}
-            checked={Boolean(data?.completed)}
+            checked={Boolean(todo?.completed)}
           />
         </CustomGrid>
         <Grid item xs={6}>
@@ -73,13 +56,13 @@ export const SingleTodoComponent = () => {
         <CustomGrid item xs={6}>
           <Switch
             onChange={(e) => handleChange('private', e.target.checked)}
-            checked={Boolean(data?.private)}
+            checked={Boolean(todo?.private)}
           />
         </CustomGrid>
       </Grid>
       <CustomBox>
-        <Button href="/">Back</Button>
-        <Button variant="contained" href={`/todo/update-todo/${data?._id}`}>
+        <Button href="/todos">Back</Button>
+        <Button variant="contained" href={`/todo/update-todo/${todo?._id}`}>
           Edit
         </Button>
       </CustomBox>

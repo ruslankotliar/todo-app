@@ -9,24 +9,22 @@ import {
   CustomViewButton
 } from '../table-todos.styled';
 
-export const TodosMobileComponent = ({
-  todos,
-  updateTodoCompleteStatus,
-  removeTodoFromDB
-}: any) => (
+export const TodosMobileComponent = ({ todos, updateTodoMutation, removeTodoMutation }: any) => (
   <Container>
     {todos.map((todo: ITodo) => (
       <CustomBoxMobile key={todo._id}>
         <Typography variant="h4">{todo?.title}</Typography>
         <CustomTypography variant="body1">{todo?.description}</CustomTypography>
         <CustomBox>
-          <CustomViewButton variant="contained" href={`/todo/${todo._id}`}>
+          <CustomViewButton variant="contained" href={`/todo/single-todo/${todo._id}`}>
             View
           </CustomViewButton>
-          <CustomDeleteButton onClick={() => removeTodoFromDB(todo._id)}>Delete</CustomDeleteButton>
+          <CustomDeleteButton onClick={() => removeTodoMutation(todo._id)}>
+            Delete
+          </CustomDeleteButton>
           <Switch
             onChange={(e) => {
-              updateTodoCompleteStatus(
+              updateTodoMutation(
                 {
                   title: todo.title,
                   description: todo.description,

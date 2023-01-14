@@ -1,1 +1,2 @@
-export * from './filter-data.helper';
+export * from './debounce.helper';
+export * from './throttle.helper';

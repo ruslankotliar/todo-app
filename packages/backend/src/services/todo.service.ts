@@ -1,16 +1,21 @@
 import Todo from '../models/Todo';
-import { ITodo, UpdateTodoBody, CreateTodo } from '../types/todos.type';
+import { ITodo, UpdateTodoBody, CreateTodo, Filters, Pagination } from '../types/todos.type';
 
 export default class TodoService {
-  async findAll() {
-    const todos: Array<ITodo> | null = await Todo.find({ private: false }).sort({ createdAt: -1 });
-    return todos;
-  }
-
-  async findAllPrivate(id: string) {
-    const todos: Array<ITodo> | null = await Todo.find({ private: true, userId: id }).sort({
+  async findAll(id: string, filters: Filters, pagination: Pagination) {
+    await Todo.createIndexes({ title: 'text' });
+    const todos: Array<ITodo> | null = await Todo.aggregate([
+      {
+        $match: {
+          ...filters,
+          userID: id
+        }
+      },
+      ...pagination
+    ]).sort({
       createdAt: -1
     });
+    console.log(todos);
     return todos;
   }
 

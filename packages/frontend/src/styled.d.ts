@@ -25,6 +25,7 @@ interface CustomTheme {
   };
   spaces: {
     l40: string;
+    l20: string;
     l15: string;
     l10: string;
     l7: string;

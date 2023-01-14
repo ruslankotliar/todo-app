@@ -8,7 +8,7 @@ interface ITodo {
   userId: string;
 }
 
-type GetTodoById = {
+type GetById = {
   id: string;
 };
 
@@ -33,4 +33,25 @@ type DeleteTodoById = {
   id: string;
 };
 
-export type { ITodo, GetTodoById, CreateTodo, UpdateTodoBody, UpdateTodoParams, DeleteTodoById };
+type Filters = {
+  private?: Boolean;
+  completed?: Boolean;
+  $text?: { $search: string; $caseSensitive: Boolean; $diacriticSensitive: Boolean };
+};
+
+type Pagination = [
+  { $setWindowFields: { output: { totalCount: { $count: {} } } } },
+  { $skip: number },
+  { $limit: number }
+];
+
+export type {
+  ITodo,
+  GetById,
+  CreateTodo,
+  UpdateTodoBody,
+  UpdateTodoParams,
+  DeleteTodoById,
+  Filters,
+  Pagination
+};

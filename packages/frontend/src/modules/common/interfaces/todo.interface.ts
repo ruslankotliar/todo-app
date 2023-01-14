@@ -1,5 +1,5 @@
 export interface ITodo {
-  _id: any;
+  _id: string;
   title: String;
   description: String;
   completed: Boolean;
@@ -10,6 +10,7 @@ export interface ICreateTodo {
   title: String;
   description?: String;
   private?: Boolean;
+  userID?: string;
 }
 
 export interface IUpdateTodo {
@@ -17,6 +18,7 @@ export interface IUpdateTodo {
   description: String;
   private: Boolean;
   completed?: Boolean;
+  userID?: string;
 }
 
 export interface IUpdateTodoMutation {

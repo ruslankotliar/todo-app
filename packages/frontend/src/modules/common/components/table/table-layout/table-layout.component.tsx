@@ -1,85 +1,141 @@
-import React from 'react';
-import json2mq from 'json2mq';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 
-import { Box, IconButton, Tabs, TextField, useMediaQuery } from '@mui/material';
-import { Search } from '@material-ui/icons';
+import { useSearchParams } from 'react-router-dom';
+
+import {
+  Button,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TablePagination,
+  Tabs,
+  TextField
+} from '@mui/material';
 
 import { a11yProps } from '../../../utils';
-import { CustomBoxHeader, CustomBoxLayout, CustomTab } from './table-layout.styled';
+import {
+  CustomBoxHeader,
+  CustomBoxLayout,
+  CustomContainer,
+  CustomForm,
+  CustomFormControl,
+  CustomTab
+} from './table-layout.styled';
+import { useQuery } from '../../../hooks';
+import { debounce } from '../../../helpers';
 
-interface PropsValue {
-  setSearchQuery: Function;
-  setFilterTodos: Function;
-  filterTodos: string;
-  children: any;
-}
+export const TodosTableLayout = ({ children, setTrigger, count }: any) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { tablet, desktop, mobile } = useQuery();
 
-export const TodosTableLayout = ({
-  children,
-  filterTodos,
-  setSearchQuery,
-  setFilterTodos
-}: PropsValue) => {
-  // MEDIA QUERIES
-  const mobile = useMediaQuery(
-    json2mq({
-      maxWidth: 424
-    })
-  );
-  const tablet = useMediaQuery(
-    json2mq({
-      minWidth: 425,
-      maxWidth: 767
-    })
-  );
-  const desktop = useMediaQuery(
-    json2mq({
-      minWidth: 768
-    })
-  );
-  // PAGINATION VALUES
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setFilterTodos(newValue);
+  const [access, setAccess] = useState<string>(searchParams.get('access') || 'public');
+  const [status, setStatus] = useState<string>(searchParams.get('status') || 'all');
+  const [query, setQuery] = useState<string>(searchParams.get('query') || '');
+
+  const [page, setPage] = useState<number>(Number(searchParams.get('page')) || 0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(Number(searchParams.get('perPage')) || 10);
+
+  // update search params
+  const changeSearchParams = () => {
+    searchParams.set('access', access);
+    searchParams.set('status', status);
+    searchParams.set('query', query);
+    searchParams.set('perPage', rowsPerPage.toString());
+    searchParams.set('page', page.toString());
+    setSearchParams(searchParams);
+    // it makes react-query refetch data based on filters and pagination
+    setTrigger(Date.now());
   };
 
+  // filters handlers
+  const handleChangePrivate = (event: React.SyntheticEvent, newValue: string) => {
+    setAccess(newValue);
+  };
+
+  const handleChangeCompleted = (event: SelectChangeEvent<string>) => {
+    setStatus(event.target.value);
+  };
+
+  const handleChangeQuery = (event: any) => {
+    const target = event.target as HTMLButtonElement;
+    setQuery(target.value);
+  };
+  const debouncedHandleChangeQuery = useMemo(() => debounce(handleChangeQuery, 500), []);
+
+  // reset filters
+  const resetFilters = () => {
+    setAccess('public');
+    setStatus('all');
+    setQuery('');
+  };
+
+  // PAGINATION
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  useEffect(() => {
+    changeSearchParams();
+  }, [access, status, query, rowsPerPage, page]);
+
   const searchBar = (
-    <form>
+    <CustomForm>
       <TextField
         id="search-bar"
         className="text"
-        onInput={(event) => {
-          const target = event.target as HTMLButtonElement;
-          setSearchQuery(target.value);
-        }}
+        onInput={debouncedHandleChangeQuery}
         label="Enter a todo title"
         variant="outlined"
         placeholder="Search..."
         size="small"
+        defaultValue={query}
       />
-      {desktop ||
-        (mobile && (
-          <IconButton type="submit" aria-label="search">
-            <Search />
-          </IconButton>
-        ))}
-    </form>
+    </CustomForm>
   );
 
   return (
     <CustomBoxLayout>
       <CustomBoxHeader>
         {mobile && searchBar}
-        <Box>
-          <Tabs value={filterTodos} onChange={handleChange} aria-label="basic tabs example">
-            <CustomTab value="all" label="All" {...a11yProps(0)} />
-            <CustomTab value="private" label="Private" {...a11yProps(1)} />
+        <CustomContainer>
+          <Tabs value={access} onChange={handleChangePrivate} aria-label="basic tabs example">
             <CustomTab value="public" label="Public" {...a11yProps(2)} />
-            <CustomTab value="completed" label="Completed" {...a11yProps(3)} />
+            <CustomTab value="private" label="Private" {...a11yProps(1)} />
           </Tabs>
-        </Box>
-        {tablet && searchBar}
+          <CustomFormControl variant="standard">
+            <Select
+              sx={{ p: '0.7rem', fontSize: '14px' }}
+              id="completed"
+              value={status}
+              onChange={handleChangeCompleted}
+            >
+              <MenuItem value="all">ALL</MenuItem>
+              <MenuItem value="completed">COMPLETED</MenuItem>
+              <MenuItem value="todo">TO DO</MenuItem>
+            </Select>
+          </CustomFormControl>
+          <Button sx={{ marginLeft: '1rem' }} onClick={resetFilters}>
+            Reset
+          </Button>
+        </CustomContainer>
+        {(tablet || desktop) && searchBar}
       </CustomBoxHeader>
       {children}
+      <TablePagination
+        sx={{ mx: '4rem' }}
+        rowsPerPageOptions={[5, 10, 25, 100]}
+        component="div"
+        count={count}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </CustomBoxLayout>
   );
 };

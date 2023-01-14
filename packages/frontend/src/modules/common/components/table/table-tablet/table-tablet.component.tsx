@@ -18,24 +18,22 @@ import {
 
 import { ITodo } from '../../../interfaces';
 
-export const TodosTabletComponent = ({
-  todos,
-  updateTodoCompleteStatus,
-  removeTodoFromDB
-}: any) => (
+export const TodosTabletComponent = ({ todos, updateTodoMutation, removeTodoMutation }: any) => (
   <Swiper effect="cards" grabCursor modules={[EffectCards]} className="mySwiper">
     {todos.map((todo: ITodo) => (
       <SwiperSlide key={todo._id}>
         <Typography variant="h3">{todo?.title}</Typography>
         <CustomTypography variant="body1">{todo?.description}</CustomTypography>
         <CustomBox>
-          <CustomViewButton variant="contained" href={`/todo/${todo._id}`}>
+          <CustomViewButton variant="contained" href={`/todo/single-todo/${todo._id}`}>
             View
           </CustomViewButton>
-          <CustomDeleteButton onClick={() => removeTodoFromDB(todo._id)}>Delete</CustomDeleteButton>
+          <CustomDeleteButton onClick={() => removeTodoMutation(todo._id)}>
+            Delete
+          </CustomDeleteButton>
           <Switch
             onChange={(e) => {
-              updateTodoCompleteStatus(
+              updateTodoMutation(
                 {
                   title: todo.title,
                   description: todo.description,

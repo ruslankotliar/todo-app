@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from 'styled-components';
-import { Box, Tab } from '@mui/material';
+import { Box, Container, FormControl, Tab } from '@mui/material';
 
 export const CustomBoxLayout = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -26,15 +26,25 @@ export const CustomBoxHeader = styled(Box)(({ theme }) => ({
 }));
 
 export const CustomTab = styled(Tab)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-
-  minWidth: theme.spaces.l4,
-  margin: 'auto',
   [theme.breakpoints.down('sm')]: {
     padding: `${theme.spaces.l} ${theme.spaces.xs}`
   },
   [theme.breakpoints.down('md')]: {
     padding: `${theme.spaces.l} 0`
   }
+}));
+
+export const CustomContainer = styled(Container)(({ theme }) => ({
+  display: 'flex',
+  padding: 0
+}));
+
+export const CustomFormControl = styled(FormControl)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center'
+}));
+
+export const CustomForm = styled('form')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center'
 }));

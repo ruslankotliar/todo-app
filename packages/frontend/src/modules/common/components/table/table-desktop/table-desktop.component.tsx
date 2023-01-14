@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Switch,
-  Table,
-  TableBody,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow
-} from '@mui/material';
+import { Switch, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 
 import {
   CustomDeleteButton,
@@ -19,13 +11,9 @@ import {
 } from '../table-todos.styled';
 
 export const TodosDesktopComponent = ({
-  todos,
-  page,
-  rowsPerPage,
-  updateTodoCompleteStatus,
-  handleChangePage,
-  handleChangeRowsPerPage,
-  removeTodoFromDB
+  todos = [],
+  updateTodoMutation,
+  removeTodoMutation
 }: any) => (
   <CustomPaper>
     <TableContainer>
@@ -47,48 +35,47 @@ export const TodosDesktopComponent = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {todos.length &&
-            todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => {
+          {todos &&
+            todos.map((row: any) => {
               const { title, description, completed, private: privateStatus, _id: id } = row;
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={id}>
                   <CustomTableCell align="left">{title}</CustomTableCell>
                   <CustomTableCell align="left">{description}</CustomTableCell>
-                  <CustomViewButton variant="contained" href={`/todo/${id}`}>
-                    View
-                  </CustomViewButton>
-                  <CustomEditButton href={`/todo/update-todo/${id}`}>Edit</CustomEditButton>
-                  <CustomDeleteButton onClick={() => removeTodoFromDB(id)}>
-                    Delete
-                  </CustomDeleteButton>
-                  <Switch
-                    onChange={(e) => {
-                      updateTodoCompleteStatus(
-                        {
-                          title,
-                          description,
-                          privateStatus,
-                          completed: e.target.checked
-                        },
-                        id
-                      );
-                    }}
-                    defaultChecked={completed}
-                  />
+                  <CustomTableCell align="center">
+                    <CustomViewButton variant="contained" href={`/todo/single-todo/${id}`}>
+                      View
+                    </CustomViewButton>
+                  </CustomTableCell>
+                  <CustomTableCell align="center">
+                    <CustomEditButton href={`/todo/update-todo/${id}`}>Edit</CustomEditButton>
+                  </CustomTableCell>
+                  <CustomTableCell align="center">
+                    <CustomDeleteButton onClick={() => removeTodoMutation(id)}>
+                      Delete
+                    </CustomDeleteButton>
+                  </CustomTableCell>
+                  <CustomTableCell align="center">
+                    <Switch
+                      onChange={(e) => {
+                        updateTodoMutation(
+                          {
+                            title,
+                            description,
+                            private: privateStatus,
+                            completed: e.target.checked
+                          },
+                          id
+                        );
+                      }}
+                      defaultChecked={completed}
+                    />
+                  </CustomTableCell>
                 </TableRow>
               );
             })}
         </TableBody>
       </Table>
     </TableContainer>
-    <TablePagination
-      rowsPerPageOptions={[10, 25, 100]}
-      component="div"
-      count={todos.length}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={handleChangePage}
-      onRowsPerPageChange={handleChangeRowsPerPage}
-    />
   </CustomPaper>
 );

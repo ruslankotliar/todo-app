@@ -1,6 +1,5 @@
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import express from 'express';
 import 'dotenv/config';
 import AppRouter from './routes';
@@ -15,7 +14,6 @@ connectDB();
 // Express configuration
 app.set('port', process.env.PORT || 4200);
 app.use(bodyParser.json());
-app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: 'http://localhost:3000' }));
 

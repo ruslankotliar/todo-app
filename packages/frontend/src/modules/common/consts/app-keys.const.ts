@@ -16,23 +16,30 @@ export const QUERY_KEYS = {
 
 // Backend Routes
 export const BACKEND_KEYS = {
-  TODOS: 'api/todos/',
-  GET_TODO: 'api/todos/get-todo/',
-  CREATE_TODO: 'api/todos/create-todo/',
-  UPDATE_TODO: 'api/todos/update-todo/',
-  DELETE_TODO: 'api/todos/delete-todo/'
+  TODOS: 'todos/',
+  GET_TODO: 'todos/get-todo/',
+  CREATE_TODO: 'todos/create-todo',
+  UPDATE_TODO: 'todos/update-todo/',
+  DELETE_TODO: 'todos/delete-todo/',
+  REGISTER_USER: 'user/register',
+  LOGIN_USER: 'user/login',
+  UPDATE_USER: 'user/update/'
 };
 
 export const ROUTER_KEYS = {
   ROOT: '/',
-  TODO: '/todo/:id',
-  UPDATE_TODO: '/todo/update-todo/:id',
+  SINGLE_TODO: '/todo/single-todo/:todoID',
   CREATE_TODO: '/todo/create-todo',
+  UPDATE_TODO: '/todo/update-todo/:todoID',
   NOT_FOUND: '*',
-  PROFILE: '/profile/:id'
+  PROFILE: '/user/profile/:userID',
+  LOGIN: '/user/login',
+  SIGNUP: '/user/register',
+  UPDATE: '/user/update/:userID'
 };
 
-export const REACT_QUERY_KEYS: { todo: string; todos: string } = {
+export const REACT_QUERY_KEYS: { todo: string; todos: string; user: string } = {
   todo: 'todo',
-  todos: 'todos'
+  todos: 'todos',
+  user: 'user'
 };

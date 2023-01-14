@@ -8,10 +8,8 @@ export const errorHandler = (
   next: NextFunction
 ): void => {
   let errMessage = 'Unknown Error';
-  const errStatus = 500;
   if (error instanceof Error) errMessage = error.message;
-  res.status(errStatus).json({
-    status: errStatus,
+  res.status(500).json({
     message: errMessage,
     stack: process.env.NODE_ENV === 'development' ? error.stack : {}
   });

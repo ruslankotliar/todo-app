@@ -16,7 +16,12 @@ const todoSchema: Schema<ITodo> = new Schema({
   },
   private: {
     type: Boolean,
-    default: true
+    default: false
+  },
+  userID: {
+    type: String,
+    minLength: 1,
+    required: true
   },
   createdAt: {
     type: Date,
@@ -25,5 +30,7 @@ const todoSchema: Schema<ITodo> = new Schema({
 });
 
 const Todo: Model<ITodo> = model('Todo', todoSchema);
+
+todoSchema.index({ title: 'text', description: 'text' });
 
 export default Todo;

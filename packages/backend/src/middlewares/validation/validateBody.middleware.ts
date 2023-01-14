@@ -4,9 +4,15 @@ import { ObjectSchema } from 'joi';
 export const validateBody =
   <T>(schema: ObjectSchema) =>
   async (req: Request<{ id: string }, {}, T>, res: Response, next: NextFunction) => {
-    const { error } = schema.validate(req.body);
-    if (error) {
-      throw new Error('Validation failed');
+    try {
+      const { error } = schema.validate(req.body);
+      if (error) {
+        throw new Error('Invalid body');
+      }
+      next();
+    } catch (error) {
+      res.status(400).json({
+        message: error.message
+      });
     }
-    next();
   };
