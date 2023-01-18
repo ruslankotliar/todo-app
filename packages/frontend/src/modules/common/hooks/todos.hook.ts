@@ -3,7 +3,7 @@
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useQuery, useMutation } from 'react-query';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { queryClient } from '../utils/query-client.util';
 
@@ -14,12 +14,13 @@ import { ICreateTodo, IStorageUser, ITodo, IUpdateTodo, IUpdateTodoMutation } fr
 import { useLocalStorage } from './local-storage.hook';
 import { Params } from '../types';
 
-function useSingleTodo(todoID: string | undefined) {
-  if (!todoID) return { isLoading: false, isError: false, error: null, data: null };
-  const singleTodo = useQuery<ITodo, AxiosError>(REACT_QUERY_KEYS.todo, () =>
-    getSingleTodo(todoID)
-  );
-
+function useSingleTodo(id: string | undefined) {
+  let singleTodo: any;
+  if (!id) {
+    singleTodo = { isLoading: false, isError: false, error: null, data: null };
+  } else {
+    singleTodo = useQuery<ITodo, AxiosError>(REACT_QUERY_KEYS.todo, () => getSingleTodo(id));
+  }
   return singleTodo;
 }
 
@@ -40,12 +41,14 @@ function useAllTodos(id: string | undefined) {
 
 export function useTodos() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { todoID } = useParams<Params>();
   const [error, setError] = useState<AxiosError<unknown, any> | null>();
   const [isError, setIsError] = useState<Boolean>(false);
   const [storageUser] = useLocalStorage<IStorageUser>('todo-app-user', {
     email: undefined,
-    id: undefined
+    id: undefined,
+    avatar: undefined
   });
 
   const { allTodos, setTrigger } = useAllTodos(storageUser?.id || undefined);
@@ -105,6 +108,8 @@ export function useTodos() {
   };
 
   const removeTodoMutation = (id: string) => {
+    // update all todos trigger
+    setTrigger(Date.now());
     mutateRemove(id);
   };
 
@@ -115,10 +120,10 @@ export function useTodos() {
   };
 
   useEffect(() => {
-    // const redirect: Boolean = navigate.location.pathname.includes('update-todo');
-    // const url: string = navigate.location.pathname.replace('update', 'single');
-    // isSuccessUpdate && redirect && navigate('/');
-    (isSuccessUpdate || isSuccessCreate) && navigate('/');
+    const redirect: Boolean = location.pathname.includes('update-todo');
+    const url = location.pathname.replace('update-todo', 'single-todo');
+    isSuccessUpdate && redirect && navigate(url);
+    isSuccessCreate && navigate('/');
   }, [isSuccessUpdate, isSuccessCreate]);
 
   useEffect(() => {

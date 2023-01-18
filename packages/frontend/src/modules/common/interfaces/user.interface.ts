@@ -2,11 +2,13 @@ export interface IUser {
   id?: string;
   email: string;
   password: string;
+  avatar?: any;
 }
 
 export interface IStorageUser {
   email: string | undefined;
   id: string | undefined;
+  avatar: string | undefined;
 }
 
 interface IUpdateUser extends IUser {

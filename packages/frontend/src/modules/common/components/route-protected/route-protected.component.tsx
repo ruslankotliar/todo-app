@@ -6,7 +6,8 @@ import { IStorageUser } from '../../interfaces';
 export const ProtectedRoute = ({ children }: any) => {
   const [storageUser] = useLocalStorage<IStorageUser>('todo-app-user', {
     email: undefined,
-    id: undefined
+    id: undefined,
+    avatar: undefined
   });
   if (!storageUser.email) {
     return <Navigate to="/user/login" replace />;

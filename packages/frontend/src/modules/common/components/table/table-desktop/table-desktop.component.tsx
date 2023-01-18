@@ -5,7 +5,9 @@ import {
   CustomDeleteButton,
   CustomEditButton,
   CustomPaper,
-  CustomTableCell,
+  CustomTableCellBig,
+  CustomTableCellMedium,
+  CustomTableCellSmall,
   CustomTableHeaderCell,
   CustomViewButton
 } from '../table-todos.styled';
@@ -40,22 +42,22 @@ export const TodosDesktopComponent = ({
               const { title, description, completed, private: privateStatus, _id: id } = row;
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={id}>
-                  <CustomTableCell align="left">{title}</CustomTableCell>
-                  <CustomTableCell align="left">{description}</CustomTableCell>
-                  <CustomTableCell align="center">
+                  <CustomTableCellMedium align="left">{title}</CustomTableCellMedium>
+                  <CustomTableCellBig align="left">{description}</CustomTableCellBig>
+                  <CustomTableCellSmall align="center">
                     <CustomViewButton variant="contained" href={`/todo/single-todo/${id}`}>
                       View
                     </CustomViewButton>
-                  </CustomTableCell>
-                  <CustomTableCell align="center">
+                  </CustomTableCellSmall>
+                  <CustomTableCellSmall align="center">
                     <CustomEditButton href={`/todo/update-todo/${id}`}>Edit</CustomEditButton>
-                  </CustomTableCell>
-                  <CustomTableCell align="center">
+                  </CustomTableCellSmall>
+                  <CustomTableCellSmall align="center">
                     <CustomDeleteButton onClick={() => removeTodoMutation(id)}>
                       Delete
                     </CustomDeleteButton>
-                  </CustomTableCell>
-                  <CustomTableCell align="center">
+                  </CustomTableCellSmall>
+                  <CustomTableCellSmall align="center">
                     <Switch
                       onChange={(e) => {
                         updateTodoMutation(
@@ -70,7 +72,7 @@ export const TodosDesktopComponent = ({
                       }}
                       defaultChecked={completed}
                     />
-                  </CustomTableCell>
+                  </CustomTableCellSmall>
                 </TableRow>
               );
             })}

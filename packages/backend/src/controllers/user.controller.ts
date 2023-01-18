@@ -10,7 +10,7 @@ export class UserController {
   async logInUser(req: TypedRequestBody<LogInUserReqBody>) {
     const { user } = req.body;
     const token = await signJwt(user._id);
-    return { user: { email: user.email, id: user._id }, token };
+    return { user: { email: user.email, id: user._id, avatar: user.avatar }, token };
   }
 
   async registerUser(req: TypedRequestBody<ICreateUser>) {
@@ -21,7 +21,7 @@ export class UserController {
       avatar
     });
     const token = await signJwt(user._id);
-    return { user: { email: user.email, id: user._id }, token };
+    return { user: { email: user.email, id: user._id, avatar: user.avatar }, token };
   }
 
   async updateUser(req: TypedRequestParams<UpdateTodoParams> & TypedRequestBody<ICreateUser>) {
@@ -29,7 +29,7 @@ export class UserController {
     const { body } = req;
     const user = await this.userService.updateUser(id, body);
     const token = await signJwt(user?._id);
-    return { user: { email: user?.email, id: user?._id }, token };
+    return { user: { email: user?.email, id: user?._id, avatar: user?.avatar }, token };
   }
 }
 

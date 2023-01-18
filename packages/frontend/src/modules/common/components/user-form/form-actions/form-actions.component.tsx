@@ -7,7 +7,8 @@ import { useLocalStorage } from '../../../hooks/local-storage.hook';
 import { IStorageUser } from '../../../interfaces';
 
 const RegisterUserComponent = () => {
-  const { registerUserMutation } = useUser();
+  const { registerUserMutation, isError, error, isLoading } = useUser();
+
   return (
     <UserFormComponent
       handleSubmit={registerUserMutation}
@@ -16,12 +17,15 @@ const RegisterUserComponent = () => {
       updateUser={false}
       validationSchema={registerSchema}
       initialValues={{ email: '', password: '', confirmPassword: '' }}
+      isError={isError}
+      error={error}
+      isLoading={isLoading}
     />
   );
 };
 
 const LoginUserComponent = () => {
-  const { loginUserMutation } = useUser();
+  const { loginUserMutation, isError, error, isLoading } = useUser();
   return (
     <UserFormComponent
       handleSubmit={loginUserMutation}
@@ -30,6 +34,9 @@ const LoginUserComponent = () => {
       updateUser={false}
       validationSchema={loginSchema}
       initialValues={{ email: '', password: '' }}
+      isError={isError}
+      error={error}
+      isLoading={isLoading}
     />
   );
 };
@@ -37,9 +44,10 @@ const LoginUserComponent = () => {
 const UpdateUserComponent = () => {
   const [storageUser] = useLocalStorage<IStorageUser>('todo-app-user', {
     email: undefined,
-    id: undefined
+    id: undefined,
+    avatar: undefined
   });
-  const { updateUserMutation } = useUser();
+  const { updateUserMutation, isError, error, isLoading } = useUser();
   return (
     <UserFormComponent
       handleSubmit={updateUserMutation}
@@ -53,6 +61,9 @@ const UpdateUserComponent = () => {
         newPassword: '',
         confirmNewPassword: ''
       }}
+      isError={isError}
+      error={error}
+      isLoading={isLoading}
     />
   );
 };

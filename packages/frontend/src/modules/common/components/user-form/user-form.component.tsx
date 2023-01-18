@@ -1,11 +1,16 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-curly-newline */
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Button, LinearProgress, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+
+import { Button, LinearProgress, Tab, Tabs } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
-import { TextField } from 'formik-mui';
+import { SimpleFileUpload, SimpleFileUploadProps, TextField } from 'formik-mui';
 
-import { CustomBox, CustomContainer } from './user-form.styled';
+import { AxiosError } from 'axios';
+import { CustomContainer } from './user-form.styled';
+import { ErrorComponent } from '../error';
 
 interface Props {
   handleSubmit: Function;
@@ -13,6 +18,9 @@ interface Props {
   login: Boolean;
   updateUser: Boolean;
   validationSchema: any;
+  isError: Boolean;
+  error: AxiosError<unknown, any> | undefined;
+  isLoading: Boolean;
   initialValues: {
     email: string;
     password?: string;
@@ -20,6 +28,7 @@ interface Props {
     oldPassword?: string;
     newPassword?: string;
     confirmNewPassword?: string;
+    avatar?: SimpleFileUploadProps;
   };
 }
 
@@ -29,8 +38,17 @@ export const UserFormComponent = ({
   login,
   updateUser,
   validationSchema,
-  initialValues
+  initialValues,
+  isError,
+  error,
+  isLoading
 }: Props) => {
+  const [action, setAction] = useState<string>(register ? 'register' : 'login');
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setAction(newValue);
+  };
+
   const registerForm = (
     <>
       <Field
@@ -52,6 +70,7 @@ export const UserFormComponent = ({
         variant="outlined"
         margin="dense"
       />
+      <Field name="avatar" type="file" component={SimpleFileUpload} />
     </>
   );
 
@@ -100,19 +119,30 @@ export const UserFormComponent = ({
       />
     </>
   );
+
+  if (isError) return <ErrorComponent error={error} />;
   return (
     <CustomContainer>
-      <Typography variant="h3">
-        {register && 'Register'}
-        {login && 'Log in'}
-        {updateUser && 'Update'}
-      </Typography>
+      <Tabs
+        indicatorColor="secondary"
+        textColor="inherit"
+        variant="fullWidth"
+        value={action}
+        onChange={handleChange}
+        aria-label="user-form-tabs"
+      >
+        {!updateUser && (
+          <Tab label="Register" value="register" to="/user/register" component={Link} />
+        )}
+        {!updateUser && <Tab label="Log in" value="login" to="/user/login" component={Link} />}
+        {updateUser && <Tab label="Update profile" value="update" />}
+      </Tabs>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          const { email, password, oldPassword, newPassword } = values;
-          handleSubmit({ email, password: password || oldPassword, newPassword });
+          const { email, password, oldPassword, newPassword, avatar } = values;
+          await handleSubmit({ email, password: password || oldPassword, newPassword, avatar });
           setSubmitting(false);
         }}
       >
@@ -128,19 +158,12 @@ export const UserFormComponent = ({
               variant="outlined"
               margin="dense"
             />
-            {register && registerForm}
             {login && loginForm}
             {updateUser && updateUserForm}
-            {isSubmitting && <LinearProgress />}
-            {login && (
-              <CustomBox>
-                <Typography>Not registered?</Typography>
-                <Button variant="outlined" href="/user/register">
-                  Register
-                </Button>
-              </CustomBox>
-            )}
+            {register && registerForm}
+            {(isSubmitting || isLoading) && <LinearProgress />}
             <Button
+              sx={{ display: 'block', marginTop: '0.5rem' }}
               variant="contained"
               color="primary"
               disabled={isSubmitting}

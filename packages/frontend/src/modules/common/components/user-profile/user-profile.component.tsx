@@ -8,7 +8,8 @@ import { CustomAvatar, CustomContainer, CustomGrid, CustomPaper } from './user-p
 export const ProfileComponent = () => {
   const [storageUser] = useLocalStorage<IStorageUser>('todo-app-user', {
     email: undefined,
-    id: undefined
+    id: undefined,
+    avatar: undefined
   });
 
   const logOutUser = () => {
@@ -21,7 +22,7 @@ export const ProfileComponent = () => {
   return (
     <CustomContainer>
       <CustomPaper>
-        <CustomAvatar alt="User avatar" src="/static/images/avatar/1.jpg" />
+        <CustomAvatar alt="User avatar" src={storageUser.avatar} />
         <CustomGrid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={6}>
             <Typography variant="h6">Email:</Typography>

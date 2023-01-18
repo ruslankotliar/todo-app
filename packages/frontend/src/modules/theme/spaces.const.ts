@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export const SPACES = {
   l40: '40rem',
+  l30: '30rem',
   l20: '20rem',
   l15: '15rem',
   l10: '10rem',

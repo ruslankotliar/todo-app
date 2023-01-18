@@ -6,10 +6,18 @@ export const CustomPaper = styled(Paper)(({ theme }) => ({
   margin: `0 ${theme.spaces.l4}`
 }));
 
-export const CustomTableCell = styled(TableCell)(({ theme }) => ({
+export const CustomTableCellBig = styled(TableCell)(({ theme }) => ({
   wordBreak: 'break-all',
+  width: theme.spaces.l30
+}));
 
-  maxWidth: theme.spaces.l40
+export const CustomTableCellMedium = styled(TableCell)(({ theme }) => ({
+  wordBreak: 'break-all',
+  width: theme.spaces.l10
+}));
+
+export const CustomTableCellSmall = styled(TableCell)(({ theme }) => ({
+  width: theme.spaces.l5
 }));
 
 export const CustomDeleteButton = styled(Button)(({ theme }) => ({

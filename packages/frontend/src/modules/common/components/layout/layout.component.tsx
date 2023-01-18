@@ -12,7 +12,8 @@ interface Props {
 export const LayoutComponent: React.FunctionComponent<Props> = ({ children }: Props) => {
   const [{ id }] = useLocalStorage<IStorageUser>('todo-app-user', {
     email: undefined,
-    id: undefined
+    id: undefined,
+    avatar: undefined
   });
   return (
     <>
