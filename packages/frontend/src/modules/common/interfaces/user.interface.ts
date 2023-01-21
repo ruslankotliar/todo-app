@@ -8,7 +8,7 @@ export interface IUser {
 export interface IStorageUser {
   email: string | undefined;
   id: string | undefined;
-  avatar: string | undefined;
+  avatar: any;
 }
 
 interface IUpdateUser extends IUser {

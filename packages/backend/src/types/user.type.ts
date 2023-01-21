@@ -2,13 +2,13 @@ interface IUser {
   _id: string;
   email: string;
   password: string;
-  avatar: string;
+  avatar: any;
 }
 
 interface ICreateUser {
   email: string;
   password: string;
-  avatar: string;
+  avatar: any;
 }
 
 type LogInUserReqBody = {

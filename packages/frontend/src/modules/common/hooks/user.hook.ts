@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-confusing-arrow */
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -23,46 +21,55 @@ import { Params } from '../types';
 import { loginUser, registerUser, updateUser } from '../api/user';
 import { useLocalStorage } from './local-storage.hook';
 
-import { storage } from '../../../configs/firebase';
+type AxiosResponse = {
+  message: string;
+};
 
 export function useUser() {
-  const [error, setError] = useState<AxiosError<unknown, any> | undefined>();
-  const [isError, setIsError] = useState<Boolean>(false);
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [error, setError] = useState<AxiosError<AxiosResponse, any> | undefined>();
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [, setStorageUser] = useLocalStorage<IStorageUser>('todo-app-user', {
     email: undefined,
     id: undefined,
     avatar: undefined
   });
   const [, setStorageToken] = useLocalStorage<string | undefined>('todo-app-token', undefined);
-  const [avatar, setAvatar] = useState<string | undefined>(undefined);
-  const [userData, setUserData] = useState<IUser | undefined>(undefined);
+  // const [avatar, setAvatar] = useState<string | ArrayBuffer | null>(null);
+  // const [userData, setUserData] = useState<IUser | undefined>(undefined);
   const params = useParams<Params>();
 
-  async function handleUpload(file: any) {
-    if (!file) {
-      alert('Please choose a file first!');
-    }
-    const storageRef = ref(storage, `/files/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    uploadTask.on(
-      'state_changed',
-      () => {
-        setIsLoading(true);
-        console.log('loading avatar...');
-      },
-      (err) => console.log(err),
-      () => {
-        // download url
-        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          setAvatar(url);
-          console.log(url);
-        });
-      }
-    );
-  }
+  // async function handleUpload(file: any, id: string) {
+  //   if (!file) {
+  //     import('jdenticon').then(({ toSvg }) => {
+  //       const svgString = toSvg(id, 100);
+  //       const base64 = window.btoa(svgString);
+  //       file = `data:image/svg+xml;base64,${base64}`;
+  //     });
+  //   }
+  //   const storageRef = ref(storage, `/files/${file?.name || `random-image-${Date.now()}.svg`}`);
+  //   const uploadTask = uploadBytesResumable(storageRef, file);
+  //   uploadTask.on(
+  //     'state_changed',
+  //     () => {
+  //       setIsLoading(true);
+  //     },
+  //     (err) => {
+  //       setIsError(true);
+  //       setError(err);
+  //       setIsLoading(false);
+  //     },
+  //     () => {
+  //       // download url
+  //       getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+  //         setAvatar(url);
+  //       });
+  //     }
+  //   );
+  // }
 
-  const register = useMutation<ICreateUser, AxiosError<unknown, any> | undefined, IUser>(
+  const register = useMutation<ICreateUser, AxiosError<AxiosResponse, any> | undefined, FormData>(
     registerUser,
     {
       onSuccess: ({ user }: ICreateUser) => {
@@ -71,15 +78,18 @@ export function useUser() {
     }
   );
 
-  const login = useMutation<ICreateUser, AxiosError<unknown, any> | undefined, IUser>(loginUser, {
-    onSuccess: ({ user }: ICreateUser) => {
-      queryClient.setQueryData(REACT_QUERY_KEYS.user, user);
+  const login = useMutation<ICreateUser, AxiosError<AxiosResponse, any> | undefined, IUser>(
+    loginUser,
+    {
+      onSuccess: ({ user }: ICreateUser) => {
+        queryClient.setQueryData(REACT_QUERY_KEYS.user, user);
+      }
     }
-  });
+  );
 
   const update = useMutation<
     ICreateUser,
-    AxiosError<unknown, any> | undefined,
+    AxiosError<AxiosResponse, any> | undefined,
     IUpdateUserMutation
   >(updateUser, {
     onSuccess: ({ user }: ICreateUser) => {
@@ -113,8 +123,12 @@ export function useUser() {
   } = update;
 
   const registerUserMutation = async (user: IUser) => {
-    setUserData({ email: user.email, password: user.password });
-    handleUpload(user.avatar);
+    const { email, password, avatar } = user;
+    const formData = new FormData();
+    formData.append('avatar', avatar);
+    formData.append('email', email);
+    formData.append('password', password);
+    mutateRegister(formData);
   };
 
   const loginUserMutation = (user: IUser) => {
@@ -126,11 +140,11 @@ export function useUser() {
     mutateUpdate({ user, id });
   };
 
-  useEffect(() => {
-    avatar &&
-      userData &&
-      mutateRegister({ email: userData.email, password: userData.password, avatar });
-  }, [avatar]);
+  // useEffect(() => {
+  //   avatar &&
+  //     userData &&
+  //     mutateRegister({ email: userData.email, password: userData.password, avatar });
+  // }, [avatar]);
 
   useEffect(() => {
     if (isSuccessUpdate || isSuccessRegister || isSuccessLogin) {
@@ -152,12 +166,17 @@ export function useUser() {
     setIsLoading(isLoadingLogin || isLoadingRegister || isLoadingUpdate);
   }, [isLoadingLogin, isLoadingRegister, isLoadingUpdate]);
 
+  useEffect(() => {
+    setIsSuccess(isSuccessLogin || isSuccessRegister || isSuccessUpdate);
+  }, [isSuccessLogin, isSuccessRegister, isSuccessUpdate]);
+
   return {
     registerUserMutation,
     loginUserMutation,
     updateUserMutation,
     error,
     isError,
-    isLoading
+    isLoading,
+    isSuccess
   };
 }

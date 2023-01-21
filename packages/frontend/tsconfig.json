@@ -29,5 +29,5 @@
   },
   "include": [
     "src"
-  ]
+, "../backend/src/config/firebase.ts"  ]
 }

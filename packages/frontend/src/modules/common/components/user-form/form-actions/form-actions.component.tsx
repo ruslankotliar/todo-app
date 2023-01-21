@@ -7,7 +7,7 @@ import { useLocalStorage } from '../../../hooks/local-storage.hook';
 import { IStorageUser } from '../../../interfaces';
 
 const RegisterUserComponent = () => {
-  const { registerUserMutation, isError, error, isLoading } = useUser();
+  const { registerUserMutation, isError, error, isLoading, isSuccess } = useUser();
 
   return (
     <UserFormComponent
@@ -20,12 +20,13 @@ const RegisterUserComponent = () => {
       isError={isError}
       error={error}
       isLoading={isLoading}
+      isSuccess={isSuccess}
     />
   );
 };
 
 const LoginUserComponent = () => {
-  const { loginUserMutation, isError, error, isLoading } = useUser();
+  const { loginUserMutation, isError, error, isLoading, isSuccess } = useUser();
   return (
     <UserFormComponent
       handleSubmit={loginUserMutation}
@@ -37,6 +38,7 @@ const LoginUserComponent = () => {
       isError={isError}
       error={error}
       isLoading={isLoading}
+      isSuccess={isSuccess}
     />
   );
 };
@@ -47,7 +49,7 @@ const UpdateUserComponent = () => {
     id: undefined,
     avatar: undefined
   });
-  const { updateUserMutation, isError, error, isLoading } = useUser();
+  const { updateUserMutation, isError, error, isLoading, isSuccess } = useUser();
   return (
     <UserFormComponent
       handleSubmit={updateUserMutation}
@@ -64,6 +66,7 @@ const UpdateUserComponent = () => {
       isError={isError}
       error={error}
       isLoading={isLoading}
+      isSuccess={isSuccess}
     />
   );
 };

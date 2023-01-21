@@ -17,8 +17,8 @@ const router: Router = Router();
 
 router.post(
   '/register',
-  validateBody<IUser>(userSchema),
   registerValidation,
+  validateBody<IUser>(userSchema),
   sendResponse(userController.registerUser.bind(userController))
 );
 

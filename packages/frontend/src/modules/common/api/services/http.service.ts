@@ -1,7 +1,7 @@
 import axios from 'axios'; // It could be any fetching services, such as default fetch, call api, xhr, etc.
 import { ICreateTodo, IUser } from '../../interfaces';
 
-type Data = ICreateTodo | IUser;
+type Data = ICreateTodo | IUser | FormData;
 
 interface IConfig {
   url: string;

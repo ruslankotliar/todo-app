@@ -4,7 +4,7 @@ import HttpService from './http.service';
 import { BACKEND_KEYS } from '../../consts/app-keys.const';
 
 class UserService extends HttpService {
-  registerUser(user: IUser) {
+  registerUser(user: FormData) {
     return this.post(
       {
         url: BACKEND_KEYS.REGISTER_USER,

@@ -1,7 +1,7 @@
 import { IUpdateUserMutation, IUser } from '../interfaces';
 import { userService } from './services/user.service';
 
-const registerUser = async (user: IUser) => {
+const registerUser = async (user: FormData) => {
   const { data } = await userService.registerUser(user);
   return data;
 };
