@@ -1,24 +1,23 @@
 import { readFileSync } from 'fs';
 
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-// import PersistentFile from 'formidable/PersistentFile';
 
-import { File } from 'formidable';
 import { storage } from '../config/firebase';
 
-export async function uploadAvatar(file: File | undefined, id: string): Promise<string> {
-  // generate random user avatar
-  if (!file) {
-    const avatar = await import('jdenticon').then(({ toSvg }) => {
-      const svgString = toSvg(id, 100);
-      const base64 = window.btoa(svgString);
-      return `data:image/svg+xml;base64,${base64}`;
-    });
-    return avatar;
-  }
+export async function uploadAvatar(file: any, id: string): Promise<string> {
+  // generate random user avatar if needed
+  const image = file
+    ? readFileSync(file.path)
+    : await import('jdenticon').then(({ toPng }) => toPng(id, 200));
 
-  const storageRef = ref(storage, `/files/${file.newFilename}.${file.mimetype?.split('/')[1]}`);
-  const uploadTask = uploadBytesResumable(storageRef, readFileSync(file.filepath));
+  const storageRef = ref(
+    storage,
+    `/files/${file?.newFilename || `random-avatar-${Date.now()}`}.${
+      file?.mimetype?.split('/')[1] || 'png'
+    }`
+  );
+
+  const uploadTask = uploadBytesResumable(storageRef, image);
   await uploadTask;
   const avatar = await getDownloadURL(uploadTask.snapshot.ref);
   return avatar;

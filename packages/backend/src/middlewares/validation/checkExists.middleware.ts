@@ -14,6 +14,7 @@ export const checkExists =
       if (!exists) {
         throw new Error('Does not exist');
       }
+      req.body.exists = exists;
       next();
     } catch (error) {
       res.status(400).json({

@@ -25,9 +25,8 @@ export class UserController {
   }
 
   async updateUser(req: TypedRequestParams<UpdateTodoParams> & TypedRequestBody<ICreateUser>) {
-    const { id } = req.params;
-    const { body } = req;
-    const user = await this.userService.updateUser(id, body);
+    const { body, params } = req;
+    const user = await this.userService.updateUser(params.id, body);
     const token = await signJwt(user?._id);
     return { user: { email: user?.email, id: user?._id, avatar: user?.avatar }, token };
   }
