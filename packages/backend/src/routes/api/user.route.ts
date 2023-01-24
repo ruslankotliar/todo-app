@@ -4,6 +4,7 @@ import { userSchema } from '../../schemas/user.schema';
 import userController from '../../controllers/user.controller';
 import {
   checkExists,
+  getFormidableData,
   logInValidation,
   registerValidation,
   sendResponse,
@@ -19,8 +20,9 @@ const router: Router = Router();
 router.post(
   '/register',
   formidableMiddleware(),
-  registerValidation,
+  getFormidableData,
   validateBody<IUser>(userSchema),
+  registerValidation,
   sendResponse(userController.registerUser.bind(userController))
 );
 
@@ -33,6 +35,8 @@ router.post(
 
 router.put(
   '/update/:id',
+  formidableMiddleware(),
+  getFormidableData,
   validateBody<IUser>(userSchema),
   verifyToken,
   checkExists<IUser>(User),

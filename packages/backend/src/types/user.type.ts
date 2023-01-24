@@ -5,14 +5,22 @@ interface IUser {
   avatar: any;
 }
 
-interface ICreateUser {
+interface IRequestUser {
   email: string;
   password: string;
   avatar: any;
 }
 
-type LogInUserReqBody = {
-  user: IUser;
+interface ILogInUser extends IRequestUser {
+  _id: string;
+}
+
+interface IRegisterUser extends IRequestUser {}
+
+interface IUpdateUser extends IRequestUser {}
+
+type UpdateUserParams = {
+  id: string;
 };
 
-export type { IUser, ICreateUser, LogInUserReqBody };
+export type { IUser, ILogInUser, IRegisterUser, UpdateUserParams, IUpdateUser };

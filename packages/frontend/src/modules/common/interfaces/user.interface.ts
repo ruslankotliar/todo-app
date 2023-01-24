@@ -11,12 +11,8 @@ export interface IStorageUser {
   avatar: any;
 }
 
-interface IUpdateUser extends IUser {
-  newPassword: string;
-}
-
 export interface IUpdateUserMutation {
-  user: IUpdateUser;
+  user: FormData;
   id: string;
 }
 

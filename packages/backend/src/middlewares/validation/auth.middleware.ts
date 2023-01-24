@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { Fields, Files } from 'formidable';
 import { verifyJwt } from '../../utils/jwt';
 
 import User from '../../models/User';
@@ -36,7 +35,7 @@ export async function logInValidation(req: Request, res: Response, next: NextFun
     if (!validPassword) throw new Error('Unauthorized');
 
     // send user in controller
-    req.body.user = user;
+    req.body = user;
 
     next();
   } catch (error) {
@@ -46,22 +45,9 @@ export async function logInValidation(req: Request, res: Response, next: NextFun
   }
 }
 
-interface RegisterFields extends Fields {
-  email: string;
-  password: string;
-}
-
-interface RegisterFiles extends Files {
-  avatar: any;
-}
-
 export async function registerValidation(req: Request, res: Response, next: NextFunction) {
   try {
-    const fields = req.fields as RegisterFields;
-    const files = req.files as RegisterFiles;
-
-    const { avatar } = files;
-    const { email, password } = fields;
+    const { avatar, email, password } = req.body;
 
     // check whether user is unique
     const user = await User.findOne({ email });
@@ -74,9 +60,7 @@ export async function registerValidation(req: Request, res: Response, next: Next
     const firebaseAvatarURL = await uploadAvatar(avatar, hashedPassword);
 
     // send data in controller
-    req.body.email = email;
-    req.body.password = hashedPassword;
-    req.body.avatar = firebaseAvatarURL;
+    req.body = { email, password: hashedPassword, avatar: firebaseAvatarURL };
 
     next();
   } catch (error) {
@@ -88,7 +72,7 @@ export async function registerValidation(req: Request, res: Response, next: Next
 
 export async function updateValidation(req: Request, res: Response, next: NextFunction) {
   try {
-    const { email, password, newPassword, exists: user } = req.body;
+    const { email, password, newPassword, avatar, exists: user } = req.body;
 
     // validate password
     const validPassword = await comparePasswords(password, user.password);
@@ -97,9 +81,11 @@ export async function updateValidation(req: Request, res: Response, next: NextFu
     // hash password
     const hashedPassword = await hashPassword(newPassword);
 
+    // upload image to firebase
+    const firebaseAvatarURL = await uploadAvatar(avatar, hashedPassword);
+
     // send data in controller
-    req.body.email = email;
-    req.body.password = hashedPassword;
+    req.body = { email, password: hashedPassword, avatar: firebaseAvatarURL };
 
     next();
   } catch (error) {

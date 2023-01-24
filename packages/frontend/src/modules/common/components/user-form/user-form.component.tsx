@@ -54,7 +54,7 @@ export const UserFormComponent = ({
   isLoading,
   isSuccess
 }: Props) => {
-  const [action, setAction] = useState<string>(register ? 'register' : 'login');
+  const [action, setAction] = useState<string>(register ? 'register' : login ? 'login' : 'update');
   const [open, setOpen] = useState<boolean | undefined>(isError);
   const [snackBar, setSnackBar] = useState<SnackBar>();
 
@@ -158,6 +158,13 @@ export const UserFormComponent = ({
         fullWidth
         variant="outlined"
         margin="dense"
+      />
+      <Field
+        sx={{ padding: '5rem' }}
+        name="avatar"
+        accept="image/png,image/jpeg,image/gif"
+        type="file"
+        component={SimpleFileUpload}
       />
     </>
   );

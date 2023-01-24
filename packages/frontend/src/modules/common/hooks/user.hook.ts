@@ -36,38 +36,7 @@ export function useUser() {
     avatar: undefined
   });
   const [, setStorageToken] = useLocalStorage<string | undefined>('todo-app-token', undefined);
-  // const [avatar, setAvatar] = useState<string | ArrayBuffer | null>(null);
-  // const [userData, setUserData] = useState<IUser | undefined>(undefined);
   const params = useParams<Params>();
-
-  // async function handleUpload(file: any, id: string) {
-  //   if (!file) {
-  //     import('jdenticon').then(({ toSvg }) => {
-  //       const svgString = toSvg(id, 100);
-  //       const base64 = window.btoa(svgString);
-  //       file = `data:image/svg+xml;base64,${base64}`;
-  //     });
-  //   }
-  //   const storageRef = ref(storage, `/files/${file?.name || `random-image-${Date.now()}.svg`}`);
-  //   const uploadTask = uploadBytesResumable(storageRef, file);
-  //   uploadTask.on(
-  //     'state_changed',
-  //     () => {
-  //       setIsLoading(true);
-  //     },
-  //     (err) => {
-  //       setIsError(true);
-  //       setError(err);
-  //       setIsLoading(false);
-  //     },
-  //     () => {
-  //       // download url
-  //       getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-  //         setAvatar(url);
-  //       });
-  //     }
-  //   );
-  // }
 
   const register = useMutation<ICreateUser, AxiosError<AxiosResponse, any> | undefined, FormData>(
     registerUser,
@@ -135,16 +104,19 @@ export function useUser() {
     mutateLogin(user);
   };
 
-  const updateUserMutation = (user: IFormUpdateUser, id: string | undefined = params.userID) => {
+  const updateUserMutation = (
+    user: IFormUpdateUser,
+    id: string = params.userID || 'invalid user id'
+  ) => {
     if (!id) return;
-    mutateUpdate({ user, id });
+    const { email, password, newPassword, avatar } = user;
+    const formData = new FormData();
+    formData.append('avatar', avatar);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('newPassword', newPassword);
+    mutateUpdate({ user: formData, id });
   };
-
-  // useEffect(() => {
-  //   avatar &&
-  //     userData &&
-  //     mutateRegister({ email: userData.email, password: userData.password, avatar });
-  // }, [avatar]);
 
   useEffect(() => {
     if (isSuccessUpdate || isSuccessRegister || isSuccessLogin) {
