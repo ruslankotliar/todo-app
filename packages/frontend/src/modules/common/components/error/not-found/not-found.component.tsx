@@ -4,15 +4,14 @@ import { CustomContainer } from './not-found.styled';
 
 export const NotFoundComponent = () => (
   <CustomContainer>
+    <Typography variant="h1">Error 404</Typography>
     <CardMedia
       component="iframe"
       title="error 404"
       src="https://giphy.com/embed/H54feNXf6i4eAQubud"
-      width="100%"
-      height="100%"
+      sx={{ my: '2rem', width: '20rem' }}
       allowFullScreen
     />
-    <Typography variant="h1">Error 404</Typography>
     <Button variant="contained" href="/">
       Back Home
     </Button>

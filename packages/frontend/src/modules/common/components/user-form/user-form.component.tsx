@@ -5,16 +5,14 @@ import React, { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import { Alert, Button, LinearProgress, Snackbar, Tab, Tabs, AlertColor } from '@mui/material';
+import { Button, LinearProgress, Tab, Tabs } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
 import { SimpleFileUpload, TextField } from 'formik-mui';
 
 import { AxiosError } from 'axios';
 import { CustomContainer } from './user-form.styled';
-
-type AxiosResponse = {
-  message: string;
-};
+import { SnackBarComponent } from '../error/snackbar/snackbar.component';
+import { IAxiosResponse, ISnackBar } from '../../interfaces';
 
 interface Props {
   handleSubmit: Function;
@@ -24,8 +22,8 @@ interface Props {
   validationSchema: any;
   isError: boolean;
   isSuccess: boolean;
-  error: AxiosError<AxiosResponse, any> | undefined;
   isLoading: boolean;
+  error: AxiosError<IAxiosResponse, any> | undefined;
   initialValues: {
     email: string;
     password?: string;
@@ -35,11 +33,6 @@ interface Props {
     confirmNewPassword?: string;
     avatar?: any;
   };
-}
-
-interface SnackBar {
-  message: string;
-  severity: AlertColor;
 }
 
 export const UserFormComponent = ({
@@ -55,15 +48,11 @@ export const UserFormComponent = ({
   isSuccess
 }: Props) => {
   const [action, setAction] = useState<string>(register ? 'register' : login ? 'login' : 'update');
-  const [open, setOpen] = useState<boolean | undefined>(isError);
-  const [snackBar, setSnackBar] = useState<SnackBar>();
-
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string): void => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
+  const [snackBar, setSnackBar] = useState<ISnackBar>({
+    message: 'Error',
+    severity: 'error',
+    open: false
+  });
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setAction(newValue);
@@ -73,17 +62,18 @@ export const UserFormComponent = ({
     if (isError) {
       setSnackBar({
         message: error?.response?.data?.message || 'Unknown error',
-        severity: 'error'
+        severity: 'error',
+        open: true
       });
     } else {
       setSnackBar({
         message: `User successfully ${
-          updateUser ? 'updated' : register ? 'registered' : 'logged in '
+          updateUser ? 'updated' : register ? 'registered' : 'logged in'
         }`,
-        severity: 'success'
+        severity: 'success',
+        open: true
       });
     }
-    setOpen(true);
   };
 
   const registerForm = (
@@ -175,16 +165,7 @@ export const UserFormComponent = ({
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity={snackBar?.severity} sx={{ width: '100%' }}>
-          {snackBar?.message}
-        </Alert>
-      </Snackbar>
+      <SnackBarComponent snackBar={snackBar} />
       <CustomContainer>
         <Tabs
           indicatorColor="secondary"
@@ -215,7 +196,14 @@ export const UserFormComponent = ({
           }}
         >
           {({ submitForm, isSubmitting }) => (
-            <Form>
+            <Form
+              onKeyDown={(e) => {
+                if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+                  e.preventDefault();
+                  submitForm();
+                }
+              }}
+            >
               <Field
                 component={TextField}
                 name="email"

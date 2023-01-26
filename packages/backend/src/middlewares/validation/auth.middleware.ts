@@ -51,7 +51,7 @@ export async function registerValidation(req: Request, res: Response, next: Next
 
     // check whether user is unique
     const user = await User.findOne({ email });
-    if (user) throw new Error('Conflict');
+    if (user) throw new Error('User already exists');
 
     // hash password
     const hashedPassword = await hashPassword(password);

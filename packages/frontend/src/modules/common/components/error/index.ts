@@ -1,2 +1,2 @@
-export * from './not-found.component';
-export * from './server-error.component';
+export * from './not-found/not-found.component';
+export * from './server-error/server-error.component';

@@ -14,19 +14,16 @@ import {
   IFormUpdateUser,
   IUpdateUserMutation,
   IUser,
-  IStorageUser
+  IStorageUser,
+  IAxiosResponse
 } from '../interfaces';
 import { Params } from '../types';
 
 import { loginUser, registerUser, updateUser } from '../api/user';
 import { useLocalStorage } from './local-storage.hook';
 
-type AxiosResponse = {
-  message: string;
-};
-
 export function useUser() {
-  const [error, setError] = useState<AxiosError<AxiosResponse, any> | undefined>();
+  const [error, setError] = useState<AxiosError<IAxiosResponse, any> | undefined>();
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -38,7 +35,7 @@ export function useUser() {
   const [, setStorageToken] = useLocalStorage<string | undefined>('todo-app-token', undefined);
   const params = useParams<Params>();
 
-  const register = useMutation<ICreateUser, AxiosError<AxiosResponse, any> | undefined, FormData>(
+  const register = useMutation<ICreateUser, AxiosError<IAxiosResponse, any> | undefined, FormData>(
     registerUser,
     {
       onSuccess: ({ user }: ICreateUser) => {
@@ -47,7 +44,7 @@ export function useUser() {
     }
   );
 
-  const login = useMutation<ICreateUser, AxiosError<AxiosResponse, any> | undefined, IUser>(
+  const login = useMutation<ICreateUser, AxiosError<IAxiosResponse, any> | undefined, IUser>(
     loginUser,
     {
       onSuccess: ({ user }: ICreateUser) => {
@@ -58,7 +55,7 @@ export function useUser() {
 
   const update = useMutation<
     ICreateUser,
-    AxiosError<AxiosResponse, any> | undefined,
+    AxiosError<IAxiosResponse, any> | undefined,
     IUpdateUserMutation
   >(updateUser, {
     onSuccess: ({ user }: ICreateUser) => {
@@ -123,7 +120,9 @@ export function useUser() {
       const data = registerData || loginData || updateData;
       if (!data) return;
       const { token, user } = data;
-      window.location.href = '/';
+      setTimeout(() => {
+        window.location.pathname = '/';
+      }, 1500);
       setStorageUser(user);
       setStorageToken(token);
     }

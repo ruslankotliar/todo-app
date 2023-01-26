@@ -8,10 +8,6 @@ import { taskSchema } from '../../schemas/todo.schema';
 const todosRouter: Router = Router();
 
 todosRouter.get('/:id', sendResponse(todoController.getAllTodo.bind(todoController)));
-// todosRouter.get(
-//   '/private/:id',
-//   sendResponse(todoController.getAllPrivateTodo.bind(todoController))
-// );
 todosRouter.get('/get-todo/:id', sendResponse(todoController.getOneTodo.bind(todoController)));
 todosRouter.post(
   '/create-todo',
@@ -20,8 +16,8 @@ todosRouter.post(
 );
 todosRouter.put(
   '/update-todo/:id',
-  checkExists<ITodo>(Todo),
   validateBody<ITodo>(taskSchema),
+  checkExists<ITodo>(Todo),
   sendResponse(todoController.updateOneTodo.bind(todoController))
 );
 todosRouter.delete(
