@@ -21,12 +21,37 @@ import {
 import { useLocalStorage } from './local-storage.hook';
 import { Params } from '../types';
 
+interface ITodoResponse {
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+}
+
+interface ISingleTodoResponse extends ITodoResponse {
+  error: AxiosError<IAxiosResponse, any> | null;
+  data: ITodo | undefined;
+}
+
+interface IAllTodoResponse extends ITodoResponse {
+  error: AxiosError<IAxiosResponse, any> | null | { message: string };
+  data: ITodo[] | undefined;
+}
+
 function useSingleTodo(id: string | undefined) {
-  let singleTodo: any;
+  let singleTodo: ISingleTodoResponse;
   if (!id) {
-    singleTodo = { isLoading: false, isError: false, isSuccess: false, error: null, data: null };
+    singleTodo = {
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      error: null,
+      data: undefined
+    };
   } else {
-    singleTodo = useQuery<ITodo, AxiosError>(REACT_QUERY_KEYS.todo, () => getSingleTodo(id));
+    singleTodo = useQuery<ITodo, AxiosError<IAxiosResponse, any> | null>(
+      REACT_QUERY_KEYS.TODO,
+      () => getSingleTodo(id)
+    );
   }
   return singleTodo;
 }
@@ -35,18 +60,19 @@ function useAllTodos(id: string | undefined) {
   const [trigger, setTrigger] = useState<number>(Date.now());
   const [searchParams] = useSearchParams();
 
-  let allTodos: any;
+  let allTodos: IAllTodoResponse;
   if (!id) {
     allTodos = {
       isLoading: false,
       isError: true,
       isSuccess: false,
       error: { message: 'Unauthorized' },
-      data: null
+      data: undefined
     };
   } else {
-    allTodos = useQuery<ITodo[], AxiosError>([REACT_QUERY_KEYS.todos, trigger], () =>
-      getAllTodos(id, searchParams)
+    allTodos = useQuery<ITodo[], AxiosError<IAxiosResponse, any> | null>(
+      [REACT_QUERY_KEYS.TODOS, trigger],
+      () => getAllTodos(id, searchParams)
     );
   }
   return { allTodos, setTrigger };
@@ -75,7 +101,7 @@ export function useTodos() {
       onSuccess: (data: ITodo) => {
         if (data.private) return;
         queryClient.setQueryData(
-          REACT_QUERY_KEYS.todos,
+          REACT_QUERY_KEYS.TODOS,
           (currentTodos: ITodo[] = []) => [...currentTodos, data] as ITodo[]
         );
       }
@@ -88,10 +114,10 @@ export function useTodos() {
     IUpdateTodoMutation
   >(updateTodo, {
     onSuccess: (data: ITodo) => {
-      queryClient.setQueryData(REACT_QUERY_KEYS.todo, data);
+      queryClient.setQueryData(REACT_QUERY_KEYS.TODO, data);
       if (data.private) return;
       queryClient.setQueryData(
-        REACT_QUERY_KEYS.todos,
+        REACT_QUERY_KEYS.TODOS,
         (currentTodos: ITodo[] = []) =>
           currentTodos.map((todo: ITodo) => (todo._id === data._id ? data : todo)) as ITodo[]
       );
@@ -103,7 +129,7 @@ export function useTodos() {
     {
       onSuccess: (data: ITodo) => {
         queryClient.setQueryData(
-          REACT_QUERY_KEYS.todos,
+          REACT_QUERY_KEYS.TODOS,
           (currentTodos: ITodo[] = []) =>
             currentTodos.filter((todo: ITodo) => todo._id !== data._id) as ITodo[]
         );

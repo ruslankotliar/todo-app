@@ -23,4 +23,9 @@ type UpdateUserParams = {
   id: string;
 };
 
-export type { IUser, ILogInUser, IRegisterUser, UpdateUserParams, IUpdateUser };
+type ReturnUserData = {
+  user: { email: string | undefined; id: string | undefined; avatar: string | undefined };
+  token: string | undefined;
+};
+
+export type { IUser, ILogInUser, IRegisterUser, UpdateUserParams, IUpdateUser, ReturnUserData };

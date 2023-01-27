@@ -38,8 +38,8 @@ export const ROUTER_KEYS = {
   UPDATE: '/user/update/:userID'
 };
 
-export const REACT_QUERY_KEYS: { todo: string; todos: string; user: string } = {
-  todo: 'todo',
-  todos: 'todos',
-  user: 'user'
+export const REACT_QUERY_KEYS = {
+  TODO: 'todo',
+  TODOS: 'todos',
+  USER: 'user'
 };

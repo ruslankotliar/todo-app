@@ -57,40 +57,41 @@ export const TodosTableComponent = () => {
     (isSuccessMutate || isErrorMutate) && handleSnackBar();
   }, [isSuccessMutate, isErrorMutate]);
 
-  if (isError) {
-    return <ErrorComponent error={error} />;
-  }
-
-  if (isLoading || isLoadingMutate) {
-    return <SpinnerComponent />;
-  }
-
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      <SnackBarComponent snackBar={snackBar} />
-      <TodosTableLayout setTrigger={setTrigger} count={todos[0]?.totalCount || 0}>
-        {desktop && (
-          <TodosDesktopComponent
-            todos={todos}
-            updateTodoMutation={updateTodoMutation}
-            removeTodoMutation={removeTodoMutation}
-          />
-        )}
-        {tablet && (
-          <TodosTabletComponent
-            todos={todos}
-            updateTodoMutation={updateTodoMutation}
-            removeTodoMutation={removeTodoMutation}
-          />
-        )}
-        {mobile && (
-          <TodosMobileComponent
-            todos={todos}
-            updateTodoMutation={updateTodoMutation}
-            removeTodoMutation={removeTodoMutation}
-          />
-        )}
-      </TodosTableLayout>
+      {isError ? (
+        <ErrorComponent error={error} />
+      ) : isLoading || isLoadingMutate ? (
+        <SpinnerComponent />
+      ) : (
+        <>
+          <SnackBarComponent snackBar={snackBar} />
+          <TodosTableLayout setTrigger={setTrigger} count={todos ? todos[0]?.totalCount : 0}>
+            {desktop && (
+              <TodosDesktopComponent
+                todos={todos}
+                updateTodoMutation={updateTodoMutation}
+                removeTodoMutation={removeTodoMutation}
+              />
+            )}
+            {tablet && (
+              <TodosTabletComponent
+                todos={todos}
+                updateTodoMutation={updateTodoMutation}
+                removeTodoMutation={removeTodoMutation}
+              />
+            )}
+            {mobile && (
+              <TodosMobileComponent
+                todos={todos}
+                updateTodoMutation={updateTodoMutation}
+                removeTodoMutation={removeTodoMutation}
+              />
+            )}
+          </TodosTableLayout>
+        </>
+      )}
     </>
   );
 };

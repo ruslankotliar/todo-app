@@ -12,36 +12,35 @@ import {
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  async getAllTodo(req: TypedRequestParams<GetById>) {
-    const { id } = req.params;
-    const { filters, pagination } = queryHelper(req.query);
+  async getAllTodo({ params, query }: TypedRequestParams<GetById>) {
+    const { id } = params;
+    const { filters, pagination } = queryHelper(query);
     const todos = await this.todoService.findAll(id, filters, pagination);
     return todos;
   }
 
-  async getOneTodo(req: TypedRequestParams<GetById>) {
-    const { id } = req.params;
+  async getOneTodo({ params }: TypedRequestParams<GetById>) {
+    const { id } = params;
     const todo = await this.todoService.findOne(id);
     return todo;
   }
 
-  async createOneTodo(req: TypedRequestBody<CreateTodo>) {
-    const { body } = req;
+  async createOneTodo({ body }: TypedRequestBody<CreateTodo>) {
     const newTodo = await this.todoService.createOne(body);
     return newTodo;
   }
 
-  async updateOneTodo(
-    req: TypedRequestParams<UpdateTodoParams> & TypedRequestBody<UpdateTodoBody>
-  ) {
-    const { id } = req.params;
-    const { body } = req;
+  async updateOneTodo({
+    params,
+    body
+  }: TypedRequestParams<UpdateTodoParams> & TypedRequestBody<UpdateTodoBody>) {
+    const { id } = params;
     const updatedTodo = await this.todoService.updateOne(id, body);
     return updatedTodo;
   }
 
-  async deleteOneTodo(req: TypedRequestParams<DeleteTodoById>) {
-    const { id } = req.params;
+  async deleteOneTodo({ params }: TypedRequestParams<DeleteTodoById>) {
+    const { id } = params;
     const deletedTodo = await this.todoService.deleteOne(id);
     return deletedTodo;
   }

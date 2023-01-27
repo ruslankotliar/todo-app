@@ -76,6 +76,10 @@ export const UserFormComponent = ({
     }
   };
 
+  useEffect(() => {
+    (isSuccess || isError) && handleSnackBar();
+  }, [isSuccess, isError]);
+
   const registerForm = (
     <>
       <Field
@@ -159,9 +163,57 @@ export const UserFormComponent = ({
     </>
   );
 
-  useEffect(() => {
-    (isSuccess || isError) && handleSnackBar();
-  }, [isSuccess, isError]);
+  const form = (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={async (values, { setSubmitting }) => {
+        const { email, password, oldPassword, newPassword, avatar } = values;
+        await handleSubmit({
+          email,
+          password: password || oldPassword,
+          newPassword,
+          avatar
+        });
+        setSubmitting(false);
+      }}
+    >
+      {({ submitForm, isSubmitting }) => (
+        <Form
+          onKeyDown={(e) => {
+            if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+              e.preventDefault();
+              submitForm();
+            }
+          }}
+        >
+          <Field
+            component={TextField}
+            name="email"
+            type="email"
+            label="Email"
+            required
+            fullWidth
+            variant="outlined"
+            margin="dense"
+          />
+          {login && loginForm}
+          {updateUser && updateUserForm}
+          {register && registerForm}
+          {(isSubmitting || isLoading) && <LinearProgress />}
+          <Button
+            sx={{ display: 'block', marginTop: '0.5rem' }}
+            variant="contained"
+            color="primary"
+            disabled={isSubmitting}
+            onClick={submitForm}
+          >
+            Submit
+          </Button>
+        </Form>
+      )}
+    </Formik>
+  );
 
   return (
     <>
@@ -181,55 +233,7 @@ export const UserFormComponent = ({
           {!updateUser && <Tab label="Log in" value="login" to="/user/login" component={Link} />}
           {updateUser && <Tab label="Update profile" value="update" />}
         </Tabs>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={async (values, { setSubmitting }) => {
-            const { email, password, oldPassword, newPassword, avatar } = values;
-            await handleSubmit({
-              email,
-              password: password || oldPassword,
-              newPassword,
-              avatar
-            });
-            setSubmitting(false);
-          }}
-        >
-          {({ submitForm, isSubmitting }) => (
-            <Form
-              onKeyDown={(e) => {
-                if (e.code === 'Enter' || e.code === 'NumpadEnter') {
-                  e.preventDefault();
-                  submitForm();
-                }
-              }}
-            >
-              <Field
-                component={TextField}
-                name="email"
-                type="email"
-                label="Email"
-                required
-                fullWidth
-                variant="outlined"
-                margin="dense"
-              />
-              {login && loginForm}
-              {updateUser && updateUserForm}
-              {register && registerForm}
-              {(isSubmitting || isLoading) && <LinearProgress />}
-              <Button
-                sx={{ display: 'block', marginTop: '0.5rem' }}
-                variant="contained"
-                color="primary"
-                disabled={isSubmitting}
-                onClick={submitForm}
-              >
-                Submit
-              </Button>
-            </Form>
-          )}
-        </Formik>
+        {form}
       </CustomContainer>
     </>
   );

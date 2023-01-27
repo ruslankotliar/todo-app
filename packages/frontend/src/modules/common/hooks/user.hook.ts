@@ -39,7 +39,7 @@ export function useUser() {
     registerUser,
     {
       onSuccess: ({ user }: ICreateUser) => {
-        queryClient.setQueryData(REACT_QUERY_KEYS.user, user);
+        queryClient.setQueryData(REACT_QUERY_KEYS.USER, user);
       }
     }
   );
@@ -48,7 +48,7 @@ export function useUser() {
     loginUser,
     {
       onSuccess: ({ user }: ICreateUser) => {
-        queryClient.setQueryData(REACT_QUERY_KEYS.user, user);
+        queryClient.setQueryData(REACT_QUERY_KEYS.USER, user);
       }
     }
   );
@@ -59,7 +59,7 @@ export function useUser() {
     IUpdateUserMutation
   >(updateUser, {
     onSuccess: ({ user }: ICreateUser) => {
-      queryClient.setQueryData(REACT_QUERY_KEYS.user, user);
+      queryClient.setQueryData(REACT_QUERY_KEYS.USER, user);
     }
   });
 

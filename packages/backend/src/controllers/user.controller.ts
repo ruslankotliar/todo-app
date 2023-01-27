@@ -1,4 +1,10 @@
-import { ILogInUser, IRegisterUser, IUpdateUser, UpdateUserParams } from '../types/user.type';
+import {
+  ILogInUser,
+  IRegisterUser,
+  IUpdateUser,
+  ReturnUserData,
+  UpdateUserParams
+} from '../types/user.type';
 import UserService from '../services/user.service';
 import { TypedRequestBody, TypedRequestParams } from '../types/controllers.type';
 import { signJwt } from '../utils/jwt';
@@ -6,14 +12,13 @@ import { signJwt } from '../utils/jwt';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  async logInUser(req: TypedRequestBody<ILogInUser>) {
-    const { body: user } = req;
+  async logInUser({ body: user }: TypedRequestBody<ILogInUser>): Promise<ReturnUserData> {
     const token = await signJwt(user._id);
     return { user: { email: user.email, id: user._id, avatar: user.avatar }, token };
   }
 
-  async registerUser(req: TypedRequestBody<IRegisterUser>) {
-    const { email, password, avatar } = req.body;
+  async registerUser({ body }: TypedRequestBody<IRegisterUser>): Promise<ReturnUserData> {
+    const { email, password, avatar } = body;
     const user = await this.userService.registerUser({
       email,
       password,
@@ -23,8 +28,11 @@ export class UserController {
     return { user: { email: user.email, id: user._id, avatar: user.avatar }, token };
   }
 
-  async updateUser(req: TypedRequestParams<UpdateUserParams> & TypedRequestBody<IUpdateUser>) {
-    const { body, params } = req;
+  async updateUser({
+    body,
+    params
+  }: TypedRequestParams<UpdateUserParams> &
+    TypedRequestBody<IUpdateUser>): Promise<ReturnUserData> {
     const user = await this.userService.updateUser(params.id, body);
     const token = await signJwt(user?._id);
     return { user: { email: user?.email, id: user?._id, avatar: user?.avatar }, token };

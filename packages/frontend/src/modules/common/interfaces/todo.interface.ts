@@ -1,23 +1,24 @@
 export interface ITodo {
   _id: string;
-  title: String;
-  description: String;
-  completed: Boolean;
-  private: Boolean;
+  title: string;
+  description: string;
+  completed: boolean;
+  private: boolean;
+  totalCount?: number;
 }
 
 export interface ICreateTodo {
-  title: String;
-  description?: String;
-  private?: Boolean;
+  title: string;
+  description?: string;
+  private?: boolean;
   userID?: string;
 }
 
 export interface IUpdateTodo {
-  title: String;
-  description: String;
-  private: Boolean;
-  completed?: Boolean;
+  title: string;
+  description: string;
+  private: boolean;
+  completed?: boolean;
   userID?: string;
 }
 

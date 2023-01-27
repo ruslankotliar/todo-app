@@ -49,81 +49,76 @@ export const TodoFormComponent = () => {
     (isSuccessMutate || isErrorMutate) && handleSnackBar();
   }, [isSuccessMutate, isErrorMutate]);
 
-  if (isError) {
-    return <ErrorComponent error={error} />;
-  }
-
-  if (isLoading || isLoadingMutate) {
-    return <SpinnerComponent />;
-  }
-
-  return (
-    <>
-      <SnackBarComponent snackBar={snackBar} />
-      <Box>
-        <Typography variant="h3">{todo ? 'Update todo' : 'Create todo'}</Typography>
-        <Formik
-          initialValues={{
-            title: todo?.title || '',
-            description: todo?.description || '',
-            private: todo?.private || false
-          }}
-          validationSchema={todoSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            todo ? updateTodoMutation(values) : createTodoMutation(values);
-            setSubmitting(false);
+  const form = (
+    <Formik
+      initialValues={{
+        title: todo?.title || '',
+        description: todo?.description || '',
+        private: todo?.private || false
+      }}
+      validationSchema={todoSchema}
+      onSubmit={(values, { setSubmitting }) => {
+        todo ? updateTodoMutation(values) : createTodoMutation(values);
+        setSubmitting(false);
+      }}
+    >
+      {({ submitForm, isSubmitting }) => (
+        <Form
+          onKeyDown={(e) => {
+            if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+              e.preventDefault();
+              submitForm();
+            }
           }}
         >
-          {({ submitForm, isSubmitting }) => (
-            <Form
-              onKeyDown={(e) => {
-                if (e.code === 'Enter' || e.code === 'NumpadEnter') {
-                  e.preventDefault();
-                  submitForm();
-                }
-              }}
-            >
-              <Field
-                component={TextField}
-                name="title"
-                type="text"
-                label="Title"
-                required
-                fullWidth
-                variant="outlined"
-                margin="dense"
-              />
-              <Field
-                component={TextField}
-                name="description"
-                type="text"
-                label="Description"
-                fullWidth
-                variant="outlined"
-                margin="dense"
-              />
-              <Box display="flex">
-                <h5>Private:</h5>
-                <Field
-                  component={CheckboxWithLabel}
-                  name="private"
-                  type="checkbox"
-                  label="Private"
-                />
-              </Box>
-              {isSubmitting && <LinearProgress />}
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={isSubmitting}
-                onClick={submitForm}
-              >
-                Submit
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </Box>
+          <Field
+            component={TextField}
+            name="title"
+            type="text"
+            label="Title"
+            required
+            fullWidth
+            variant="outlined"
+            margin="dense"
+          />
+          <Field
+            component={TextField}
+            name="description"
+            type="text"
+            label="Description"
+            fullWidth
+            variant="outlined"
+            margin="dense"
+          />
+          <Box display="flex">
+            <h5>Private:</h5>
+            <Field component={CheckboxWithLabel} name="private" type="checkbox" label="Private" />
+          </Box>
+          {isSubmitting && <LinearProgress />}
+          <Button variant="contained" color="primary" disabled={isSubmitting} onClick={submitForm}>
+            Submit
+          </Button>
+        </Form>
+      )}
+    </Formik>
+  );
+
+  return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {isError ? (
+        <ErrorComponent error={error} />
+      ) : isLoading || isLoadingMutate ? (
+        <SpinnerComponent />
+      ) : (
+        <>
+          <SnackBarComponent snackBar={snackBar} />
+          <Box>
+            <Typography variant="h3">{todo ? 'Update todo' : 'Create todo'}</Typography>
+            {form}
+          </Box>
+        </>
+      )}
     </>
   );
 };

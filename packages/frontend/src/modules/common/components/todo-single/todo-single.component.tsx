@@ -52,7 +52,7 @@ export const SingleTodoComponent = () => {
     }
   };
 
-  const handleChange = (value: string, newValue: Boolean) => {
+  const handleChange = (value: string, newValue: boolean) => {
     if (!todo) return;
     if (value === 'completed' || value === 'private') todo[value] = newValue;
     updateTodoMutation(
@@ -70,48 +70,49 @@ export const SingleTodoComponent = () => {
     (isSuccessMutate || isErrorMutate) && handleSnackBar();
   }, [isSuccessMutate, isErrorMutate]);
 
-  if (isError) {
-    return <ErrorComponent error={error} />;
-  }
-
-  if (isLoading || isLoadingMutate) {
-    return <SpinnerComponent />;
-  }
-
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      <SnackBarComponent snackBar={snackBar} />
-      <CustomPaper>
-        <CustomTypography>{todo?.title}</CustomTypography>
-        <Typography variant="h6">Description</Typography>
-        <CustomTypographyBody variant="body1">{todo?.description}</CustomTypographyBody>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={6}>
-            <Typography>Completed</Typography>
-          </Grid>
-          <CustomGrid item xs={6}>
-            <Switch
-              onChange={(e) => handleChange('completed', e.target.checked)}
-              checked={Boolean(todo?.completed)}
-            />
-          </CustomGrid>
-          <Grid item xs={6}>
-            <Typography>Private</Typography>
-          </Grid>
-          <CustomGrid item xs={6}>
-            <Switch
-              onChange={(e) => handleChange('private', e.target.checked)}
-              checked={Boolean(todo?.private)}
-            />
-          </CustomGrid>
-        </Grid>
-        <CustomBox>
-          <Button href="/todos">Back</Button>
-          <Button variant="contained" href={`/todo/update-todo/${todo?._id}`}>
-            Edit
-          </Button>
-        </CustomBox>
-      </CustomPaper>
+      {isError ? (
+        <ErrorComponent error={error} />
+      ) : isLoading || isLoadingMutate ? (
+        <SpinnerComponent />
+      ) : (
+        <>
+          <SnackBarComponent snackBar={snackBar} />
+          <CustomPaper>
+            <CustomTypography>{todo?.title}</CustomTypography>
+            <Typography variant="h6">Description</Typography>
+            <CustomTypographyBody variant="body1">{todo?.description}</CustomTypographyBody>
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+              <Grid item xs={6}>
+                <Typography>Completed</Typography>
+              </Grid>
+              <CustomGrid item xs={6}>
+                <Switch
+                  onChange={(e) => handleChange('completed', e.target.checked)}
+                  checked={Boolean(todo?.completed)}
+                />
+              </CustomGrid>
+              <Grid item xs={6}>
+                <Typography>Private</Typography>
+              </Grid>
+              <CustomGrid item xs={6}>
+                <Switch
+                  onChange={(e) => handleChange('private', e.target.checked)}
+                  checked={Boolean(todo?.private)}
+                />
+              </CustomGrid>
+            </Grid>
+            <CustomBox>
+              <Button href="/todos">Back</Button>
+              <Button variant="contained" href={`/todo/update-todo/${todo?._id}`}>
+                Edit
+              </Button>
+            </CustomBox>
+          </CustomPaper>
+        </>
+      )}
     </>
   );
 };

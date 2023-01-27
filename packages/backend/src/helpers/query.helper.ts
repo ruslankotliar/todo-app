@@ -2,9 +2,17 @@ import { Filters, Pagination } from '../types/todos.type';
 
 const setFilters = (access: string, status: string, query: string): Filters => {
   let filters: Filters = { private: false };
-  if (status === 'all') delete filters.completed;
-  if (status === 'completed') filters.completed = true;
-  if (status === 'todo') filters.completed = false;
+  switch (status) {
+    case 'all':
+      delete filters.completed;
+      break;
+    case 'completed':
+      filters.completed = true;
+      break;
+    case 'todo':
+      filters.completed = false;
+      break;
+  }
 
   filters.private = access === 'private';
 
