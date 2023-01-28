@@ -75,10 +75,9 @@ export const SingleTodoComponent = () => {
     <>
       {isError ? (
         <ErrorComponent error={error} />
-      ) : isLoading || isLoadingMutate ? (
-        <SpinnerComponent />
       ) : (
         <>
+          {(isLoading || isLoadingMutate) && <SpinnerComponent />}
           <SnackBarComponent snackBar={snackBar} />
           <CustomPaper>
             <CustomTypography>{todo?.title}</CustomTypography>

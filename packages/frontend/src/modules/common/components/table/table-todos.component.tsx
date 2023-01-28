@@ -46,7 +46,7 @@ export const TodosTableComponent = () => {
     }
     if (isSuccessMutate) {
       setSnackBar({
-        message: `Todo successfully ${isSuccessUpdate ? 'updated' : 'removed'}`,
+        message: `Todo ${isSuccessUpdate ? 'updated' : 'deleted'}`,
         severity: 'success',
         open: true
       });
@@ -62,12 +62,14 @@ export const TodosTableComponent = () => {
     <>
       {isError ? (
         <ErrorComponent error={error} />
-      ) : isLoading || isLoadingMutate ? (
-        <SpinnerComponent />
       ) : (
         <>
+          {(isLoading || isLoadingMutate) && <SpinnerComponent />}
           <SnackBarComponent snackBar={snackBar} />
-          <TodosTableLayout setTrigger={setTrigger} count={todos ? todos[0]?.totalCount : 0}>
+          <TodosTableLayout
+            setTrigger={setTrigger}
+            count={todos?.length ? todos[0]?.totalCount : 0}
+          >
             {desktop && (
               <TodosDesktopComponent
                 todos={todos}

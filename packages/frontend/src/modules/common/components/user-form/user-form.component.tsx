@@ -3,13 +3,10 @@
 /* eslint-disable react/jsx-curly-newline */
 import React, { useEffect, useState } from 'react';
 
-import { Link } from 'react-router-dom';
-
 import { Button, LinearProgress, Tab, Tabs } from '@mui/material';
-import { Field, Form, Formik } from 'formik';
-import { SimpleFileUpload, TextField } from 'formik-mui';
 
 import { AxiosError } from 'axios';
+import { Link, Field, Form, Formik, SimpleFileUpload, TextField } from '../../../deps';
 import { CustomContainer } from './user-form.styled';
 import { SnackBarComponent } from '../error/snackbar/snackbar.component';
 import { IAxiosResponse, ISnackBar } from '../../interfaces';

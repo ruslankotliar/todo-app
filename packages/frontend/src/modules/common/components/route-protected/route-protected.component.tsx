@@ -1,5 +1,6 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+
+import { Navigate, Outlet } from '../../../deps';
 import { useLocalStorage } from '../../hooks/local-storage.hook';
 import { IStorageUser } from '../../interfaces';
 

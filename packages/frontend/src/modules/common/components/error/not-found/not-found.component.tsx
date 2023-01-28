@@ -1,5 +1,7 @@
-import { Button, CardMedia, Typography } from '@mui/material';
 import React from 'react';
+
+import { Button, CardMedia, Typography } from '@mui/material';
+
 import { CustomContainer } from './not-found.styled';
 
 export const NotFoundComponent = () => (

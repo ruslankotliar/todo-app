@@ -34,7 +34,7 @@ export const ROUTER_KEYS = {
   NOT_FOUND: '*',
   PROFILE: '/user/profile/:userID',
   LOGIN: '/user/login',
-  SIGNUP: '/user/register',
+  REGISTER: '/user/register',
   UPDATE: '/user/update/:userID'
 };
 

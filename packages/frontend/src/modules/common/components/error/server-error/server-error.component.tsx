@@ -1,5 +1,7 @@
-import { Alert, AlertTitle, Button, CardMedia } from '@mui/material';
 import React from 'react';
+
+import { Alert, AlertTitle, Button, CardMedia } from '@mui/material';
+
 import { CustomContainer } from '../not-found/not-found.styled';
 
 export const ErrorComponent = ({ error }: any) => (

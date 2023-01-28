@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { Box, Button, LinearProgress, Typography } from '@mui/material';
-import { Formik, Form, Field } from 'formik';
-import { CheckboxWithLabel, TextField } from 'formik-mui';
+import { Formik, Form, Field, CheckboxWithLabel, TextField } from '../../../deps';
 
 import { useTodos } from '../../hooks';
 import { todoSchema } from '../../schemas/todo.schema';
@@ -94,7 +93,7 @@ export const TodoFormComponent = () => {
             <h5>Private:</h5>
             <Field component={CheckboxWithLabel} name="private" type="checkbox" label="Private" />
           </Box>
-          {isSubmitting && <LinearProgress />}
+          {(isSubmitting || isLoadingMutate) && <LinearProgress />}
           <Button variant="contained" color="primary" disabled={isSubmitting} onClick={submitForm}>
             Submit
           </Button>
@@ -108,7 +107,7 @@ export const TodoFormComponent = () => {
     <>
       {isError ? (
         <ErrorComponent error={error} />
-      ) : isLoading || isLoadingMutate ? (
+      ) : isLoading ? (
         <SpinnerComponent />
       ) : (
         <>

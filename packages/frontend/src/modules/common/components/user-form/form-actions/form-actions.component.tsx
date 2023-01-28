@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { loginSchema, registerSchema, updateUserSchema } from '../../../schemas/user.schema';
-import { UserFormComponent } from '../index';
+import { UserFormComponent } from '../user-form.component';
 import { useUser } from '../../../hooks/user.hook';
 import { useLocalStorage } from '../../../hooks/local-storage.hook';
 import { IStorageUser } from '../../../interfaces';

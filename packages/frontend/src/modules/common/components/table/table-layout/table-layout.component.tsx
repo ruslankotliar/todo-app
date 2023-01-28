@@ -1,7 +1,5 @@
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
-
 import {
   Button,
   MenuItem,
@@ -11,6 +9,8 @@ import {
   Tabs,
   TextField
 } from '@mui/material';
+
+import { useSearchParams } from '../../../../deps';
 
 import { a11yProps } from '../../../utils';
 import {
@@ -89,7 +89,7 @@ export const TodosTableLayout = ({ children, setTrigger, count }: any) => {
         id="search-bar"
         className="text"
         onInput={debouncedHandleChangeQuery}
-        label="Enter a todo title"
+        label="Find todo"
         variant="outlined"
         placeholder="Search..."
         size="small"

@@ -1,4 +1,4 @@
-import axios from 'axios'; // It could be any fetching services, such as default fetch, call api, xhr, etc.
+import axios from 'axios';
 import { ICreateTodo, IUser } from '../../interfaces';
 
 type Data = ICreateTodo | IUser | FormData;

@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-confusing-arrow */
 import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
-import { useParams } from 'react-router-dom';
 
-import { AxiosError } from 'axios';
+import { AxiosError, useMutation, useParams } from '../../deps';
 import { queryClient } from '../utils/query-client.util';
 
 import { REACT_QUERY_KEYS } from '../consts/app-keys.const';

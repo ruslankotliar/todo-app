@@ -18,6 +18,7 @@ export const SnackBarComponent = ({ snackBar }: Props) => {
   };
 
   useEffect(() => {
+    setOpen(false);
     setOpen(snackBar.open);
   }, [snackBar]);
 

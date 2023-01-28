@@ -1,13 +1,12 @@
 /* eslint-disable react/jsx-curly-newline */
 import React from 'react';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCards } from 'swiper';
+import { Switch, Typography } from '@mui/material';
+
+import { Swiper, SwiperSlide, EffectCards } from '../../../../deps';
 
 import 'swiper/css';
 import 'swiper/css/effect-cards';
-
-import { Switch, Typography } from '@mui/material';
 
 import {
   CustomBox,

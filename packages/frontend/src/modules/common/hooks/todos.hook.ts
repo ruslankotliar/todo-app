@@ -1,9 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-confusing-arrow */
-import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { useQuery, useMutation } from 'react-query';
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+
+import {
+  AxiosError,
+  useQuery,
+  useMutation,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams
+} from '../../deps';
 
 import { queryClient } from '../utils/query-client.util';
 
@@ -180,12 +187,10 @@ export function useTodos() {
 
   useEffect(() => {
     const redirect: Boolean = location.pathname.includes('update-todo');
-    const url = location.pathname.replace('update-todo', 'single-todo');
-    isSuccessUpdate && redirect && navigate(url);
-    if (isSuccessCreate) {
+    if (isSuccessCreate || (isSuccessUpdate && redirect)) {
       setTimeout(() => {
         navigate('/');
-      }, 1000);
+      }, 500);
     }
   }, [isSuccessUpdate, isSuccessCreate]);
 

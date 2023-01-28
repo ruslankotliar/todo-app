@@ -1,7 +1,7 @@
 import React from 'react';
-import { QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { ThemeProvider } from 'styled-components';
+
+import { QueryClientProvider, ReactQueryDevtools, ThemeProvider } from '../deps';
+
 import { MainRouter } from '../navigation';
 import { LayoutComponent } from '../common/components/layout';
 import { queryClient } from '../common/utils/query-client.util';
