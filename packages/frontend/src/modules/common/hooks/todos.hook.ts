@@ -93,6 +93,7 @@ export function useTodos() {
   const [isError, setIsError] = useState<Boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [action, setAction] = useState<string>('updated');
   const [storageUser] = useLocalStorage<IStorageUser>('todo-app-user', {
     email: undefined,
     id: undefined,
@@ -167,6 +168,9 @@ export function useTodos() {
   } = create;
 
   const updateTodoMutation = (todo: IUpdateTodo, id: string | undefined = todoID) => {
+    // trigger snackbar
+    setIsSuccess(false);
+    setAction('updated');
     const { id: userID } = storageUser;
     if (!userID || !id) return;
     todo = { ...todo, userID };
@@ -174,12 +178,17 @@ export function useTodos() {
   };
 
   const removeTodoMutation = (id: string) => {
+    // trigger snackbar
+    setIsSuccess(false);
+    setAction('deleted');
     // update all todos trigger
     setTrigger(Date.now());
     mutateRemove(id);
   };
 
   const createTodoMutation = (todo: ICreateTodo) => {
+    // trigger snackbar
+    setIsSuccess(false);
     const { id: userID } = storageUser;
     if (!userID) return;
     mutateCreate({ ...todo, userID });
@@ -200,7 +209,7 @@ export function useTodos() {
   }, [isErrorCreate, isErrorRemove, isErrorUpdate]);
 
   useEffect(() => {
-    setIsSuccess(isSuccessUpdate || isSuccessCreate || isSuccessRemove);
+    setIsSuccess(isSuccessUpdate || isSuccessRemove || isSuccessCreate);
   }, [isSuccessCreate, isSuccessRemove, isSuccessUpdate]);
 
   useEffect(() => {
@@ -218,6 +227,6 @@ export function useTodos() {
     updateTodoMutation,
     removeTodoMutation,
     createTodoMutation,
-    isSuccessUpdate
+    action
   };
 }

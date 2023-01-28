@@ -3,5 +3,6 @@ import { RegisterUserComponent } from '../../common/components/user-form/form-ac
 export default {
   element: RegisterUserComponent,
   path: 'REGISTER',
-  protectedRoute: false
+  protectedRoute: false,
+  key: 'user-register'
 };

@@ -3,5 +3,6 @@ import { UpdateUserComponent } from '../../common/components/user-form/form-acti
 export default {
   element: UpdateUserComponent,
   path: 'UPDATE',
-  protectedRoute: true
+  protectedRoute: true,
+  key: 'user-update'
 };

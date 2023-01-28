@@ -23,7 +23,8 @@ export const TodoFormComponent = () => {
     error: errorMutate,
     singleTodo,
     updateTodoMutation,
-    createTodoMutation
+    createTodoMutation,
+    action
   } = useTodos();
   const { isLoading, isError, error, data: todo } = singleTodo;
 
@@ -37,7 +38,7 @@ export const TodoFormComponent = () => {
     }
     if (isSuccessMutate) {
       setSnackBar({
-        message: `Todo successfully ${todo ? 'updated' : 'created'}`,
+        message: `Todo successfully ${action}`,
         severity: 'success',
         open: true
       });

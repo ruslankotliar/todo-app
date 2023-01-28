@@ -30,7 +30,8 @@ export const SingleTodoComponent = () => {
     isLoading: isLoadingMutate,
     error: errorMutate,
     singleTodo,
-    updateTodoMutation
+    updateTodoMutation,
+    action
   } = useTodos();
 
   const { isError, isLoading, error, data: todo } = singleTodo;
@@ -45,7 +46,7 @@ export const SingleTodoComponent = () => {
     }
     if (isSuccessMutate) {
       setSnackBar({
-        message: 'Todo successfully updated',
+        message: `Todo successfully ${action}`,
         severity: 'success',
         open: true
       });

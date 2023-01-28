@@ -32,7 +32,7 @@ export const TodosTableComponent = () => {
     setTrigger,
     updateTodoMutation,
     removeTodoMutation,
-    isSuccessUpdate
+    action
   } = useTodos();
   const { isLoading, isError, error, data: todos } = allTodos;
 
@@ -43,10 +43,9 @@ export const TodosTableComponent = () => {
         severity: 'error',
         open: true
       });
-    }
-    if (isSuccessMutate) {
+    } else {
       setSnackBar({
-        message: `Todo ${isSuccessUpdate ? 'updated' : 'deleted'}`,
+        message: `Todo ${action}`,
         severity: 'success',
         open: true
       });

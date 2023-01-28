@@ -11,16 +11,17 @@ interface Component {
   element: () => JSX.Element;
   path: string;
   protectedRoute: boolean;
+  key: string;
 }
 
 export const MainRouter = () => (
   <Router>
     <Routes>
       {routes.map((route: Component) => {
-        const { element: Component, path, protectedRoute } = route;
+        const { element: Component, path, protectedRoute, key } = route;
         if (protectedRoute) {
           return (
-            <Route element={<ProtectedRoute />}>
+            <Route key={key} element={<ProtectedRoute />}>
               <Route
                 element={<Component />}
                 path={APP_KEYS.ROUTER_KEYS[path as keyof typeof APP_KEYS.ROUTER_KEYS]}
@@ -30,6 +31,7 @@ export const MainRouter = () => (
         }
         return (
           <Route
+            key={key}
             element={<Component />}
             path={APP_KEYS.ROUTER_KEYS[path as keyof typeof APP_KEYS.ROUTER_KEYS]}
           />

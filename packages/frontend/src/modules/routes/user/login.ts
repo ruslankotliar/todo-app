@@ -3,5 +3,6 @@ import { LoginUserComponent } from '../../common/components/user-form/form-actio
 export default {
   element: LoginUserComponent,
   path: 'LOGIN',
-  protectedRoute: false
+  protectedRoute: false,
+  key: 'user-login'
 };

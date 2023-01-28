@@ -18,6 +18,7 @@ export const SnackBarComponent = ({ snackBar }: Props) => {
   };
 
   useEffect(() => {
+    console.log('changed');
     setOpen(false);
     setOpen(snackBar.open);
   }, [snackBar]);
@@ -26,7 +27,7 @@ export const SnackBarComponent = ({ snackBar }: Props) => {
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={open}
-      autoHideDuration={2000}
+      autoHideDuration={500}
       onClose={handleClose}
     >
       <Alert onClose={handleClose} severity={snackBar?.severity} sx={{ width: '100%' }}>
