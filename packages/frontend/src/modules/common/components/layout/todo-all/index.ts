@@ -1,1 +1,1 @@
-export * from './todo-all.component';
+export * from './todo-all.layout';
