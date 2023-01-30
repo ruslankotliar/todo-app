@@ -26,12 +26,12 @@ const setFilters = (access: string, status: string, query: string): Filters => {
   return filters;
 };
 
-const setPagination = (perPage: number, page: number): Pagination => [
-  { $setWindowFields: { output: { totalCount: { $count: {} } } } },
-  { $skip: perPage * page },
-  { $limit: perPage }
-];
-
+const setPagination = (perPage: number, page: number): Pagination => ({
+  $facet: {
+    metadata: [{ $count: 'total' }],
+    data: [{ $skip: perPage * page }, { $limit: perPage }]
+  }
+});
 export const queryHelper = (params: any) => {
   const { access, status, query, perPage = 10, page = 0 } = params;
 

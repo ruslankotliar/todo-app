@@ -39,11 +39,12 @@ type Filters = {
   $text?: { $search: string; $caseSensitive: Boolean; $diacriticSensitive: Boolean };
 };
 
-type Pagination = [
-  { $setWindowFields: { output: { totalCount: { $count: {} } } } },
-  { $skip: number },
-  { $limit: number }
-];
+type Pagination = {
+  $facet: {
+    metadata: [{ $count: string }];
+    data: [{ $skip: number }, { $limit: number }];
+  };
+};
 
 export type {
   ITodo,

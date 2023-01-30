@@ -39,12 +39,16 @@ interface ISingleTodoResponse extends ITodoResponse {
   data: ITodo | undefined;
 }
 
+type MetaData = { total: number };
+
+type TodoData = { data: ITodo[] | undefined; metadata: Array<MetaData> };
+
 interface IAllTodoResponse extends ITodoResponse {
   error: AxiosError<IAxiosResponse, any> | null | { message: string };
-  data: ITodo[] | undefined;
+  data: Array<TodoData> | undefined;
 }
 
-function useSingleTodo(id: string | undefined) {
+function useSingleTodo(id: string | undefined): ISingleTodoResponse {
   let singleTodo: ISingleTodoResponse;
   if (!id) {
     singleTodo = {
@@ -74,10 +78,10 @@ function useAllTodos(id: string | undefined) {
       isError: true,
       isSuccess: false,
       error: { message: 'Unauthorized' },
-      data: undefined
+      data: [{ data: undefined, metadata: [{ total: 0 }] }]
     };
   } else {
-    allTodos = useQuery<ITodo[], AxiosError<IAxiosResponse, any> | null>(
+    allTodos = useQuery<Array<TodoData>, AxiosError<IAxiosResponse, any> | null>(
       [REACT_QUERY_KEYS.TODOS, trigger],
       () => getAllTodos(id, searchParams)
     );

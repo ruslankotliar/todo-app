@@ -4,7 +4,6 @@ export interface ITodo {
   description: string;
   completed: boolean;
   private: boolean;
-  totalCount?: number;
 }
 
 export interface ICreateTodo {

@@ -34,7 +34,7 @@ export const TodosTableComponent = () => {
     removeTodoMutation,
     action
   } = useTodos();
-  const { isLoading, isError, error, data: todos } = allTodos;
+  const { isLoading, isError, error, data } = allTodos;
 
   const handleSnackBar = (): void => {
     if (isErrorMutate) {
@@ -67,25 +67,25 @@ export const TodosTableComponent = () => {
           <SnackBarComponent snackBar={snackBar} />
           <TodosTableLayout
             setTrigger={setTrigger}
-            count={todos?.length ? todos[0]?.totalCount : 0}
+            count={data && data[0].metadata[0] ? data[0].metadata[0].total : 0}
           >
             {desktop && (
               <TodosDesktopComponent
-                todos={todos}
+                todos={data ? data[0].data : []}
                 updateTodoMutation={updateTodoMutation}
                 removeTodoMutation={removeTodoMutation}
               />
             )}
             {tablet && (
               <TodosTabletComponent
-                todos={todos}
+                todos={data ? data[0].data : []}
                 updateTodoMutation={updateTodoMutation}
                 removeTodoMutation={removeTodoMutation}
               />
             )}
             {mobile && (
               <TodosMobileComponent
-                todos={todos}
+                todos={data ? data[0].data : []}
                 updateTodoMutation={updateTodoMutation}
                 removeTodoMutation={removeTodoMutation}
               />

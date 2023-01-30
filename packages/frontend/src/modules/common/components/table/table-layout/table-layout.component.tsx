@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 
 import {
-  Button,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -16,6 +15,7 @@ import { a11yProps } from '../../../utils';
 import {
   CustomBoxHeader,
   CustomBoxLayout,
+  CustomButton,
   CustomContainer,
   CustomForm,
   CustomFormControl,
@@ -40,8 +40,10 @@ export const TodosTableLayout = ({ children, setTrigger, count }: any) => {
     searchParams.set('access', access);
     searchParams.set('status', status);
     searchParams.set('query', query);
-    searchParams.set('perPage', rowsPerPage.toString());
-    searchParams.set('page', page.toString());
+    if (!tablet) {
+      searchParams.set('perPage', rowsPerPage.toString());
+      searchParams.set('page', page.toString());
+    }
     setSearchParams(searchParams);
     // it makes react-query refetch data based on filters and pagination
     setTrigger(Date.now());
@@ -101,7 +103,7 @@ export const TodosTableLayout = ({ children, setTrigger, count }: any) => {
   return (
     <CustomBoxLayout>
       <CustomBoxHeader>
-        {mobile && searchBar}
+        {(mobile || tablet) && searchBar}
         <CustomContainer>
           <Tabs value={access} onChange={handleChangePrivate} aria-label="basic tabs example">
             <CustomTab value="public" label="Public" {...a11yProps(2)} />
@@ -119,23 +121,23 @@ export const TodosTableLayout = ({ children, setTrigger, count }: any) => {
               <MenuItem value="todo">TO DO</MenuItem>
             </Select>
           </CustomFormControl>
-          <Button sx={{ marginLeft: '1rem' }} onClick={resetFilters}>
-            Reset
-          </Button>
+          <CustomButton onClick={resetFilters}>Reset</CustomButton>
         </CustomContainer>
-        {(tablet || desktop) && searchBar}
+        {desktop && searchBar}
       </CustomBoxHeader>
       {children}
-      <TablePagination
-        sx={{ mx: '4rem' }}
-        rowsPerPageOptions={[5, 10, 25, 100]}
-        component="div"
-        count={count}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {!tablet && (
+        <TablePagination
+          sx={{ mx: '4rem' }}
+          rowsPerPageOptions={[5, 10, 25, 100]}
+          component="div"
+          count={count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
     </CustomBoxLayout>
   );
 };

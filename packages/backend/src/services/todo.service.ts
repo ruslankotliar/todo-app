@@ -1,20 +1,23 @@
 import Todo from '../models/Todo';
 import { ITodo, UpdateTodoBody, CreateTodo, Filters, Pagination } from '../types/todos.type';
 
+type MetaData = { page: number; count: number };
+
+type TodoData = { data: ITodo[] | undefined; metadata: Array<MetaData> };
+
 export default class TodoService {
   async findAll(id: string, filters: Filters, pagination: Pagination) {
     await Todo.createIndexes({ title: 'text' });
-    const todos: Array<ITodo> | null = await Todo.aggregate([
+    const todos: Array<TodoData> | null = await Todo.aggregate([
       {
         $match: {
           ...filters,
           userID: id
         }
       },
-      ...pagination
-    ]).sort({
-      createdAt: -1
-    });
+      { $sort: { createdAt: -1 } },
+      pagination
+    ]);
     return todos;
   }
 
