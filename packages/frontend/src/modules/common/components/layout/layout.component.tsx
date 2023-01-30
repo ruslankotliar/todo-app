@@ -1,7 +1,17 @@
 import React from 'react';
 
-import { CustomAppBar, CustomMain } from './layout.styled';
-import { HeaderToolbarComponent } from './header-toolbar';
+import { Toolbar } from '@mui/material';
+
+import { APP_KEYS } from '../../consts';
+
+import {
+  CustomAppBar,
+  CustomMain,
+  CustomButton,
+  CustomBoxHome,
+  CustomBoxLogIn
+} from './layout.styled';
+
 import { useLocalStorage } from '../../hooks/local-storage.hook';
 import { IStorageUser } from '../../interfaces';
 
@@ -19,7 +29,22 @@ export const LayoutComponent: React.FunctionComponent<Props> = ({ children }: Pr
     <>
       <header>
         <CustomAppBar>
-          <HeaderToolbarComponent id={id} />
+          <Toolbar>
+            {id ? (
+              <CustomBoxHome>
+                <CustomButton href={APP_KEYS.ROUTER_KEYS.ROOT}>Home</CustomButton>
+                <CustomButton variant="outlined" href={APP_KEYS.ROUTER_KEYS.CREATE_TODO}>
+                  Add todo
+                </CustomButton>
+                <CustomButton href={`/user/profile/${id}`}>My profile</CustomButton>
+              </CustomBoxHome>
+            ) : (
+              <CustomBoxLogIn>
+                <CustomButton href="/user/register">Register</CustomButton>
+                <CustomButton href="/user/login">Login</CustomButton>
+              </CustomBoxLogIn>
+            )}
+          </Toolbar>
         </CustomAppBar>
       </header>
       <CustomMain>{children}</CustomMain>

@@ -20,11 +20,11 @@ import {
   CustomForm,
   CustomFormControl,
   CustomTab
-} from './table-layout.styled';
+} from './todo-all.styled';
 import { useQuery } from '../../../hooks';
 import { debounce } from '../../../helpers';
 
-export const TodosTableLayout = ({ children, setTrigger, count }: any) => {
+export const TodosTableLayout = ({ children, setTrigger, total }: any) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { tablet, desktop, mobile } = useQuery();
 
@@ -131,7 +131,7 @@ export const TodosTableLayout = ({ children, setTrigger, count }: any) => {
           sx={{ mx: '4rem' }}
           rowsPerPageOptions={[5, 10, 25, 100]}
           component="div"
-          count={count}
+          count={total}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

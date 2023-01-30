@@ -1,4 +1,4 @@
-import { TodosTableComponent } from '../common/components/table';
+import { TodosTableComponent } from '../common/components/todo-all';
 
 export default {
   element: TodosTableComponent,
