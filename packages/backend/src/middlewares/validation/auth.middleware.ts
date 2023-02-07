@@ -16,9 +16,11 @@ export async function verifyToken(req: Request, res: Response, next: NextFunctio
 
     next();
   } catch (error) {
-    res.status(401).json({
-      message: error.message
-    });
+    if (error instanceof Error) {
+      res.status(401).json({
+        message: error.message
+      });
+    }
   }
 }
 
@@ -39,9 +41,11 @@ export async function logInValidation(req: Request, res: Response, next: NextFun
 
     next();
   } catch (error) {
-    res.status(401).json({
-      message: error.message
-    });
+    if (error instanceof Error) {
+      res.status(401).json({
+        message: error.message
+      });
+    }
   }
 }
 
@@ -64,9 +68,11 @@ export async function registerValidation(req: Request, res: Response, next: Next
 
     next();
   } catch (error) {
-    res.status(409).json({
-      message: error.message
-    });
+    if (error instanceof Error) {
+      res.status(409).json({
+        message: error.message
+      });
+    }
   }
 }
 
@@ -89,8 +95,10 @@ export async function updateValidation(req: Request, res: Response, next: NextFu
 
     next();
   } catch (error) {
-    res.status(401).json({
-      message: error.message
-    });
+    if (error instanceof Error) {
+      res.status(401).json({
+        message: error.message
+      });
+    }
   }
 }

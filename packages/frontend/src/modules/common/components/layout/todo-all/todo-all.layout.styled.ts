@@ -4,22 +4,26 @@ import { Box, Button, Container, FormControl, Tab } from '@mui/material';
 
 export const CustomBoxLayout = styled(Box)(({ theme }) => ({
   width: '100%',
-  alignSelf: 'flex-start',
+  maxWidth: 'none',
 
   margin: `${theme.spaces.l7} 0`,
   [theme.breakpoints.down('md')]: {
+    maxWidth: 'none',
     margin: `${theme.spaces.l5} 0`,
     paddingBottom: theme.spaces.l3
   }
 }));
 
 export const CustomBoxHeader = styled(Box)(({ theme }) => ({
+  maxWidth: 'none',
   display: 'flex',
   [theme.breakpoints.up('sm')]: {
+    maxWidth: 'none',
     margin: `0 ${theme.spaces.l4}`,
     justifyContent: 'space-between'
   },
   [theme.breakpoints.down('md')]: {
+    maxWidth: 'none',
     flexDirection: 'column',
     padding: `0 ${theme.spaces.l}`
   }
