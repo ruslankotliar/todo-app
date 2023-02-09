@@ -2,6 +2,8 @@
 
 A full-stack web application, built using TypeScript, that helps users manage their personal todo tasks in a simple and efficient manner. During my internship at CGS-team company, I developed this project and improved my skills in full-stack web development.
 
+### [Demo](https://www.loom.com/share/45c37dc7c23d4ae9b486091db386e181)
+
 ## Key Features
 - Register an account using email, password and upload avatar image (optional).
 - View personal profile, change password or avatar.
